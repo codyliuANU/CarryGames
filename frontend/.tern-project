@@ -1,0 +1,11 @@
+{
+  "libs": [
+    "browser"
+  ],
+  "loadEagerly": [],
+  "plugins": {
+             "angular":{},
+             "doc_comments":{}
+    }
+  }
+}

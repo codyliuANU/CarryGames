@@ -1,0 +1,10 @@
+Django
+dj-database-url
+dj-static
+django-extensions
+django-toolbelt
+djangorestframework
+gunicorn
+psycopg2
+six
+static
