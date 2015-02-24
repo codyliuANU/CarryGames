@@ -110,7 +110,9 @@ INSTALLED_APPS = (
     # Framework for generating REST endpoints
     'rest_framework',
     # Extended management commands
-    'django_extensions'
+    'django_extensions',
+    # Custom user model
+    'authentication',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -162,3 +164,6 @@ SITE_ID = 1
 
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+# Customize django user model
+AUTH_USER_MODEL = 'authentication.Account'
