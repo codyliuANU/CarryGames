@@ -50,7 +50,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-#BASE_DIR = "/home/la0rg/dj-ng-heroku-boilerplate"
+# BASE_DIR = "/home/la0rg/dj-ng-heroku-boilerplate"
 
 # Chose path to Angular.js files according to environment
 # ###
@@ -106,13 +106,17 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    
+
     # Framework for generating REST endpoints
     'rest_framework',
+    'rest_framework.authtoken',
     # Extended management commands
     'django_extensions',
     # Custom user model
     'authentication',
+    # Django-rest-auth
+    'rest_auth',
+    'djoser',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -138,12 +142,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 import dj_database_url
 
 DATABASES = {
-    #'default': {
-    #    'ENGINE': 'django.db.backends.sqlite3',
-    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #}
-    'default': 
-	dj_database_url.config(default='postgres://postgres:123@localhost/mydb')
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+   # 'default':
+   #     dj_database_url.config(default='postgres://postgres:123@localhost/heroku')
 }
 
 # Internationalization
@@ -161,9 +165,15 @@ USE_TZ = True
 
 SITE_ID = 1
 
-
-
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Customize django user model
 AUTH_USER_MODEL = 'authentication.Account'
+
+# Djanro-Rest-Framework configuration
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}

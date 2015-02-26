@@ -14,7 +14,8 @@
  */
 angular.module( 'ngBoilerplate.home', [
   'ui.router',
-  'plusOne'
+  'plusOne',
+  'djangoRESTResources'
 ])
 
 /**
@@ -38,8 +39,10 @@ angular.module( 'ngBoilerplate.home', [
 /**
  * And of course we define a controller for our route.
  */
-.controller( 'HomeCtrl', function HomeController( $scope ) {
-})
-
-;
+.controller( 'HomeCtrl', function HomeController( $scope, djResource, $log ) {
+        var accounts = djResource('/auth/accounts/');
+        $log.info(123);
+        $scope.accounts = accounts.query();
+        $log.info($scope.accounts);
+});
 
