@@ -17,9 +17,10 @@ angular.module( 'ngBoilerplate', [
   $urlRouterProvider.otherwise( '/home' );
 })
 
-.run( function run ($http, $cookies) {
+.run( function run ($http, $cookies, $log) {
   // For CSRF token compatibility with Django
   $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
+        $log.info(123);
 })
 
 .controller( 'AppCtrl', function AppCtrl ( $scope ) {
