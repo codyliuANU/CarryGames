@@ -108,6 +108,18 @@ module.exports = function ( grunt ) {
           }
        ]
       },
+
+        build_app_fonts: {
+        files: [
+          {
+            src: [ '**' ],
+            dest: '<%= build_dir %>/fonts/',
+            cwd: 'src/fonts',
+            expand: true
+          }
+       ]
+      },
+
       build_vendor_assets: {
         files: [
           {
@@ -133,6 +145,16 @@ module.exports = function ( grunt ) {
         files: [
           {
             src: [ '<%= vendor_files.js %>' ],
+            dest: '<%= build_dir %>/',
+            cwd: '.',
+            expand: true
+          }
+        ]
+      },
+        build_vendorcss: {
+        files: [
+          {
+            src: [ '<%= vendor_files.css %>' ],
             dest: '<%= build_dir %>/',
             cwd: '.',
             expand: true
@@ -552,9 +574,9 @@ module.exports = function ( grunt ) {
    * The `build` task gets your app ready to run for development and testing.
    */
   grunt.registerTask( 'build', [
-    'clean', 'html2js', 'jshint', 'coffeelint', 'coffee', 'less:build',
-    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets',
-    'copy:build_appjs', 'copy:build_vendorjs', 'index:build'
+    'clean', 'html2js', 'coffeelint', 'coffee', 'less:build',
+    'concat:build_css', 'copy:build_app_assets', 'copy:build_app_fonts', 'copy:build_vendor_assets',
+    'copy:build_appjs', 'copy:build_vendorjs', 'copy:build_vendorcss', 'index:build'
   ]);
 
   /**

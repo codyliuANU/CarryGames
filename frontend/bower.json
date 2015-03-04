@@ -35,7 +35,9 @@
     "videogular-buffering": "~1.0.1",
     "videogular-overlay-play": "~1.0.1",
     "videogular-poster": "~1.0.1",
-    "videogular-ima-ads": "~1.0.1"
+    "videogular-ima-ads": "~1.0.1",
+    "angular-translate-storage-local": "~2.6.1",
+    "jquery": "1.10.2"
   },
   "dependencies": {},
   "resolutions": {

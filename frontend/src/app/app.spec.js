@@ -4,7 +4,7 @@ describe( 'AppCtrl', function() {
         location,
         scope;
 
-    beforeEach( module( 'ngBoilerplate' ) );
+    beforeEach( module( 'app' ) );
 
     beforeEach( inject( function( $controller, $location, $rootScope ) {
       location = $location;
