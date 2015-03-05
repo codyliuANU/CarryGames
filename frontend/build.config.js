@@ -20,9 +20,7 @@ module.exports = {
    * app's unit tests.
    */
   app_files: {
-    js: [ 'src/app/*.js', '!src/app/*.spec.js',
-    'src/app/services/ui-load.js', 'src/app/directives/*.js',
-    'src/app/controllers/bootstrap.js', 'src/app/controllers/chart.js'],
+    js: [ 'src/app/**/*.js', '!src/app/**/*.spec.js'],
     jsunit: [ 'src/app/*.spec.js' ],
 
     coffee: [ 'src/app/*.coffee', '!src/app/*.spec.coffee' ],
@@ -44,6 +42,7 @@ module.exports = {
     ]
   },
 
+
   /**
    * This is the same as `app_files`, except it contains patterns that
    * reference vendor code (`vendor/`) that we need to place into the build
@@ -64,7 +63,7 @@ module.exports = {
    */
   vendor_files: {
     js: [
-        'vendor/jquery/jquery.min.js',
+       'vendor/jquery/jquery.min.js',
         'vendor/jquery/jquery.min.map',
       'vendor/angular/angular.js',
       'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',
@@ -92,11 +91,8 @@ module.exports = {
         'vendor/jquery/charts/flot/jquery.flot.spline.js',
         'vendor/jquery/charts/flot/jquery.flot.orderBars.js',
         'vendor/jquery/charts/flot/jquery.flot.pie.min.js',
-        'vendor/screenfull/dist/screenfull.js'
-    /*    ,
-        ,
+        'vendor/screenfull/dist/screenfull.js',
 
-        ,
 
         'vendor/jquery/slimscroll/jquery.slimscroll.min.js',
         'vendor/jquery/sortable/jquery.sortable.js',
@@ -117,7 +113,6 @@ module.exports = {
 
 
         'vendor/ng-grid/ng-grid.min.js',
-        'vendor/jquery/moment.min.js',
         'vendor/angular-ui-select/dist/select.min.js',
         'vendor/angular-file-upload/angular-file-upload.min.js',
         'vendor/angular-file-upload/angular-file-upload.min.map',
@@ -135,8 +130,10 @@ module.exports = {
         'vendor/videogular-poster/vg-poster.min.js',
         'vendor/videogular-ima-ads/vg-ima-ads.min.js',
 
-        ,
-        'vendor/jquery/fullcalendar/fullcalendar.min.js' */
+        //calendar
+        'vendor/jquery/jquery-ui-1.10.3.custom.min.js',
+        'vendor/jquery/moment.min.js',
+        'vendor/jquery/fullcalendar/fullcalendar.min.js',
     ],
     css: [
         'vendor/jquery/nestable/nestable.css',
@@ -159,9 +156,14 @@ module.exports = {
         'vendor/bootstrap/dist/css/bootstrap.css.map',
         'vendor/textAngular/src/textAngular.css',
         'vendor/jquery/fullcalendar/fullcalendar.css',
-        'vendor/jquery/fullcalendar/theme.css'
+        'vendor/jquery/fullcalendar/theme.css',
+
+        //fONTS
+        'vendor/font-awesome/css/font-awesome.min.css',
+        'vendor/font-awesome/css/simple-line-icons.css',
+        'vendor/font-awesome/css/font.css'
     ],
     assets: [
     ]
-  },
+  }
 };
