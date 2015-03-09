@@ -1,21 +1,19 @@
 
 
 // signup controller
-app.controller('SignupFormController', ['$scope', '$http', '$state', function($scope, $http, $state) {
-    $scope.user = {};
-    $scope.authError = null;
+app.controller('SignupFormController', ['$scope', 'djangoAuth', '$state', function($scope, djangoAuth, $state) {
+    $scope.model = {'battle_tag':'', 'password':'', 'email':''};
+    $scope.result = false;
+
     $scope.signup = function() {
-      $scope.authError = null;
-      // Try to create
-      $http.post('api/signup', {name: $scope.user.name, email: $scope.user.email, password: $scope.user.password})
-      .then(function(response) {
-        if ( !response.data.user ) {
-          $scope.authError = response;
-        }else{
-          $state.go('app.dashboard-v1');
-        }
-      }, function(x) {
-        $scope.authError = 'Server Error';
+      djangoAuth.register($scope.model.battle_tag,$scope.model.password,$scope.model.email)
+      .then(function(data) {
+            //success case
+            $scope.result = true;
+            //$state.go('app.dashboard-v1');
+      }, function (data) {
+              console.log(data);
+            $scope.errors = data;
       });
     };
   }])

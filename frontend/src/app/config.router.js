@@ -6,7 +6,10 @@ angular.module('app')
     [          '$rootScope', '$state', '$stateParams',
       function ($rootScope,   $state,   $stateParams) {
           $rootScope.$state = $state;
-          $rootScope.$stateParams = $stateParams;        
+          $rootScope.$stateParams = $stateParams;
+          $rootScope.$on('$stateChangeError', function() {
+              $state.go('access.signin');
+          })
       }
     ]
   )
@@ -278,7 +281,12 @@ angular.module('app')
               })
               .state('app.page.profile', {
                   url: '/profile',
-                  templateUrl: 'tpl/page_profile.html'
+                  templateUrl: 'tpl/page_profile.html',
+                  resolve: {
+                      authenticated: ['djangoAuth', function(djangoAuth){
+                        return djangoAuth.authenticationStatus(true)
+                      }]
+                  }
               })
               .state('app.page.post', {
                   url: '/post',
@@ -321,13 +329,18 @@ angular.module('app')
               })
               .state('access.signup', {
                   url: '/signup',
-                  templateUrl: 'tpl/page_signup.html'
-               /*   resolve: {
-                      deps: ['uiLoad',
-                        function( uiLoad ){
-                          return uiLoad.load( ['static/src/app/controllers/signup.js'] );
-                      }]
-                  }*/
+                  templateUrl: 'tpl/page_signup.html',
+                  resolve: {
+                   //   authenticated: ['djangoAuth', function(djangoAuth){
+                    //      return djangoAuth.authenticationStatus();
+                     // }]
+                  }
+              })
+              .state('access.activate', {
+                  url: '/activate/{uid}/{token}',
+                  templateUrl: 'tpl/page_activate.html',
+                  resolve: {
+                  }
               })
               .state('access.forgotpwd', {
                   url: '/forgotpwd',

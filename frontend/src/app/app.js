@@ -14,7 +14,8 @@ var app =  angular.module( 'app', [
     'ui.jq',
     'ui.validate',
     'oc.lazyLoad',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'djangoAuthModule'
 ])
 
 /**
@@ -26,10 +27,10 @@ var app =  angular.module( 'app', [
   $urlRouterProvider.otherwise( '/home' );
 })*/
 
-.run( function run ($http, $cookies, $log) {
+.run( function run ($http, $cookies, $log, djangoAuth) {
   // For CSRF token compatibility with Django
   //$http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
-        $log.info(123);
+  djangoAuth.initialize('//127.0.0.1:8080/api/auth', false);
 })
 
 /*.controller( 'AppCtrl', function AppCtrl ( $scope ) {

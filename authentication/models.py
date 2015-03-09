@@ -5,10 +5,10 @@ from django.db import models
 class AccountManager(BaseUserManager):
     def create_user(self, battle_tag, password=None, **kwargs):
         if not battle_tag:
-            raise ValueError('Users must have a valid BattleTag.')
+            raise ValueError('Пользователь должен иметь корректный BattleTag.')
 
         if not kwargs.get('email'):
-            raise ValueError('Users must have a valid email.')
+            raise ValueError('Пользователь должен иметь корректный email.')
 
         account = self.model(
             battle_tag=battle_tag,

@@ -177,3 +177,13 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
 }
+
+# Djoser App Settings
+
+DJOSER = {
+    'DOMAIN': 'localhost:8080',
+    'SITE_NAME': 'CarryGames',
+    'PASSWORD_RESET_CONFIRM_URL': 'api/auth/password/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': 'api/auth/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+}

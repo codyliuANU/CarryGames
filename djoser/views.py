@@ -58,6 +58,7 @@ class RegistrationView(utils.SendEmailViewMixin, generics.CreateAPIView):
         return {
             'subject_template_name': 'activation_email_subject.txt',
             'plain_body_template_name': 'activation_email_body.txt',
+            'html_body_template_name': 'activation_email_body.html',
         }
 
     def get_email_context(self, user):

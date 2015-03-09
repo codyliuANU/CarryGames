@@ -1,23 +1,20 @@
-
-
 /* Controllers */
-  // signin controller
-app.controller('SigninFormController', ['$scope', '$http', '$state', function($scope, $http, $state) {
-    $scope.user = {};
+// signin controller
+app.controller('SigninFormController', ['$scope', '$http', '$state', 'djangoAuth',
+    function ($scope, $http, $state, djangoAuth) {
     $scope.authError = null;
-    $scope.login = function() {
-      $scope.authError = null;
-      // Try to login
-      $http.post('api/login', {email: $scope.user.email, password: $scope.user.password})
-      .then(function(response) {
-        if ( !response.data.user ) {
-          $scope.authError = 'Email or Password not right';
-        }else{
-          $state.go('app.dashboard-v1');
-        }
-      }, function(x) {
-        $scope.authError = 'Server Error';
-      });
+
+    $scope.login = function () {
+        djangoAuth.login($scope.model.battle_tag, $scope.model.password)
+            .then(function (data) {
+                //success case
+                console.log("logged in successfully");
+                $state.go('app.dashboard-v1');
+            }, function (data) {
+                console.log(data);
+                $scope.authError = data;
+            });
     };
-  }])
+
+}])
 ;

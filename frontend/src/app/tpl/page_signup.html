@@ -1,22 +1,22 @@
     <div class="container w-xxl w-auto-xs" ng-controller="SignupFormController" ng-init="app.settings.container = false;">
-      <a href class="navbar-brand block m-t">{{app.name}}</a>
-      <div class="m-b-lg">
+      <a href="{{ app.host }}" class="navbar-brand block m-t">{{app.name}}</a>
+      <div class="m-b-lg" ng-if="result == false">
         <div class="wrapper text-center">
           <strong>Зарегестрируйтесь, чтобы получить полный доступ к приложению</strong>
         </div>
         <form name="form" class="form-validation">
-          <div class="text-danger wrapper text-center" ng-show="authError">
-              {{authError}}
+          <div class="text-danger wrapper text-center" ng-show="errors">
+              {{errors}}
           </div>
           <div class="list-group list-group-sm">
             <div class="list-group-item">
-              <input placeholder="BattleTag" class="form-control no-border" ng-model="user.battletag" required>
+              <input placeholder="BattleTag" class="form-control no-border" ng-model="model.battle_tag" required>
             </div>
             <div class="list-group-item">
-              <input type="email" placeholder="Email" class="form-control no-border" ng-model="user.email" required>
+              <input type="email" placeholder="Email" class="form-control no-border" ng-model="model.email" required>
             </div>
             <div class="list-group-item">
-               <input type="password" placeholder="Пароль" class="form-control no-border" ng-model="user.password" required>
+               <input type="password" placeholder="Пароль" class="form-control no-border" ng-model="model.password" required>
             </div>
           </div>
           <div class="checkbox m-b-md m-t-none">
@@ -30,5 +30,10 @@
           <a ui-sref="access.signin" class="btn btn-lg btn-default btn-block">Войти</a>
         </form>
       </div>
+      <div class="m-b-lg" ng-if="result == true">
+        <div class="wrapper text-center">
+          <strong>Отлично! Вы зарегестрированы. Проверьте указанную почту для получения короткой инструкцией по активации профиля.</strong>
+        </div>
+    </div>
       <div class="text-center" ng-include="'tpl/blocks/page_footer.html'"></div>
     </div>

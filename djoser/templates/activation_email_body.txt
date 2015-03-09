@@ -1,13 +1,15 @@
 {% load i18n %}{% autoescape off %}
-{% blocktrans %}You're receiving this email because you created an account on {{ site_name }}.{% endblocktrans %}
+Здравствуйте!
+Вы получили этот email так как недавно создали аккаунт на <a href="{{ protocol }}://{{ domain }}">{{ site_name }}</a> используя данный email.
 
-{% trans "Please go to the following page to activate account:" %}
+{% trans "Пожалуйста, пройдите по следующей ссылке для активации аккаунта:" %}
 {% block reset_link %}
 {{ protocol }}://{{ domain }}/{{ url }}
 {% endblock %}
+Игнорируйте данное письмо, если вы не регестрировались на сайте и больше Вы не получите подобных сообщений.
 
-{% trans "Thanks for using our site!" %}
+{% trans "Спасибо за использование нашего сайта!" %}
 
-{% blocktrans %}The {{ site_name }} team{% endblocktrans %}
+{% blocktrans %}Комманда {{ site_name }}{% endblocktrans %}
 
 {% endautoescape %}
