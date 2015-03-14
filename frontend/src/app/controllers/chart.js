@@ -21,10 +21,10 @@ app
 
     for (var i = 0; i < 20; ++i) {
       $scope.d2.push([i, Math.sin(i)]);
-    }   
+    }
 
-    $scope.d3 = [ 
-      { label: "iPhone5S", data: 40 }, 
+    $scope.d3 = [
+      { label: "iPhone5S", data: 40 },
       { label: "iPad Mini", data: 10 },
       { label: "iPad Mini Retina", data: 20 },
       { label: "iPhone4S", data: 12 },

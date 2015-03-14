@@ -15,7 +15,8 @@ var app =  angular.module( 'app', [
     'ui.validate',
     'oc.lazyLoad',
     'pascalprecht.translate',
-    'djangoAuthModule'
+    'djangoAuthModule',
+        'ngBracket'
 ])
 
 /**

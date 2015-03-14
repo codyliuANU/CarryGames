@@ -134,6 +134,8 @@ module.exports = {
         'vendor/jquery/jquery-ui-1.10.3.custom.min.js',
         'vendor/jquery/moment.min.js',
         'vendor/jquery/fullcalendar/fullcalendar.min.js',
+
+        'vendor/ngBracket/ngBracket.min.js'
     ],
     css: [
         'vendor/jquery/nestable/nestable.css',

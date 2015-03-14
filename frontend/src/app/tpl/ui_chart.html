@@ -11,11 +11,11 @@
             <div ui-jq="plot" ui-options="
               [
                 { data: {{d}}, points: { show: true, radius: 6}, splines: { show: true, tension: 0.45, lineWidth: 5, fill: 0 } }
-              ], 
+              ],
               {
                 colors: ['{{app.color.info}}'],
                 series: { shadowSize: 3 },
-                xaxis:{ 
+                xaxis:{
                   font: { color: '#ccc' },
                   position: 'bottom',
                   ticks: [
@@ -38,10 +38,10 @@
           <div class="panel-body">
             <div ui-jq="plot" ui-options="
               [
-                { data: {{d0_1}}, label: 'Unique Visits', points: { show: true } }, 
+                { data: {{d0_1}}, label: 'Unique Visits', points: { show: true } },
                 { data: {{d0_2}}, label: 'Page Views', bars: { show: true, barWidth: 0.6, fillColor: { colors: [{ opacity: 0.2 }, { opacity: 0.4}] } } }
               ],
-              {                
+              {
                 colors: [ '{{app.color.info}}','{{app.color.success}}' ],
                 series: { shadowSize: 2 },
                 xaxis:{ font: { color: '#ccc' } },
@@ -51,7 +51,7 @@
                 tooltipOpts: { content: '%s of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 0, y: 20 } }
               }
             " style="height:240px"></div>
-          </div>                  
+          </div>
         </div>
       </div>
     </div>
@@ -61,7 +61,7 @@
           <div class="panel-heading font-bold">Order bar</div>
           <div class="panel-body">
             <div ui-jq="plot" ui-options="
-              [ 
+              [
                 { label: 'A', data: {{d1_1}} },
                 { label: 'B', data: {{d1_2}} },
                 { label: 'C', data: {{d1_3}} }
@@ -72,11 +72,11 @@
                 series: { shadowSize: 1 },
                 xaxis:{ font: { color: '#ccc' } },
                 yaxis:{ font: { color: '#ccc' } },
-                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },                
+                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
                 tooltip: true
               }
             " style="height:240px"></div>
-          </div>                  
+          </div>
         </div>
       </div>
       <div class="col-md-6">
@@ -107,7 +107,7 @@
           <div class="panel-body">
             <div ui-jq="plot" ui-options="
               [
-                { data: {{d0_1}}, label: 'A', points: { show: true }, lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.1}] } } }, 
+                { data: {{d0_1}}, label: 'A', points: { show: true }, lines: { show: true, fill: true, fillColor: { colors: [{ opacity: 0.1 }, { opacity: 0.1}] } } },
                 { data: {{d0_2}}, label: 'B', points: { show: true, radius: 4 } }
               ],
               {
@@ -120,7 +120,7 @@
                 tooltipOpts: { content: '%s of %x.1 is %y.4',  defaultTheme: false, shifts: { x: 0, y: 20 } }
               }
             " style="height:240px"></div>
-          </div>                  
+          </div>
         </div>
       </div>
       <div class="col-md-6">
@@ -132,7 +132,7 @@
               {
                 series: { pie: { show: true, innerRadius: 0.5, stroke: { width: 0 }, label: { show: true, threshold: 0.05 } } },
                 colors: ['{{app.color.primary}}','{{app.color.info}}','{{app.color.success}}','{{app.color.warning}}','{{app.color.danger}}'],
-                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },   
+                grid: { hoverable: true, clickable: true, borderWidth: 0, color: '#ccc' },
                 tooltip: true,
                 tooltipOpts: { content: '%s: %p.0%' }
               }
@@ -146,7 +146,7 @@
     <div class="col-lg-4">
       <div class="panel panel-default">
         <div class="panel-heading font-bold">Pie</div>
-        <div class="panel-body text-center">              
+        <div class="panel-body text-center">
           <div ng-init="data1=[60,40]" ui-jq="sparkline" ui-options="{{data1}}, {type:'pie', height:154, sliceColors:['{{app.color.info}}','#eaeeea']}" class="sparkline inline"></div>
           <div class="line pull-in"></div>
           <div class="text-xs">

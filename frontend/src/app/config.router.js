@@ -147,6 +147,16 @@ angular.module('app')
                       }]
                   } */
               })
+              .state('app.bracket', {
+                  url: '/bracket',
+                  templateUrl: 'tpl/ui_bracket.html'
+                 /* resolve: {
+                      deps: ['uiLoad',
+                        function( uiLoad){
+                          return uiLoad.load('static/src/app/controllers/chart.js');
+                      }]
+                  } */
+              })
               // table
               .state('app.table', {
                   url: '/table',
