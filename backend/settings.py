@@ -117,6 +117,7 @@ INSTALLED_APPS = (
     # Django-rest-auth
     'rest_auth',
     'djoser',
+    'tournament',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
