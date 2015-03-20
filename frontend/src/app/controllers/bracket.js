@@ -1,8 +1,9 @@
 
 app
   // Bracket controller
-  .controller('bracketController', ['$scope', '$document', 'tournamentGenerator', 'tournamentAttendants', 'tournamentMatches',
-        function($scope, $document, tournamentGenerator, tournamentAttendants, tournamentMatches) {
+  .controller('bracketController', ['$scope', '$document', 'tournamentGenerator', 'tournamentAttendantsById',
+        'tournamentDataById',
+        function($scope, $document, tournamentGenerator, tournamentAttendantsById, tournamentDataById) {
 
         $scope.addPlayer = function() {
 			if ($scope.newPlayerName) {
@@ -234,11 +235,11 @@ app
 		};
 
 		// Dummy data untill there's a service to fetch data from db.
-		var SEsampleTeamsData = JSON.parse('[[{"name":"Player 1","id":"101","flag":"58px-Anduin_64.png"},{"name":"Player 2","id":"202","flag":"58px-Garrosh_64.png"},{"name":"Player 3","id":"3","flag":"58px-Guldan_64.png"},{"name":"Player 4","id":"4","flag":"58px-Jaina_64.png"},{"name":"Player 5","id":"5","flag":"58px-Malfurion_64.png"},{"name":"Player 6","id":"6","flag":"58px-Malfurion_64.png"},{"name":"Player 7","id":"7","flag":"58px-Malfurion_64.png"},{"name":"Player 8","id":"8","flag":"58px-Jaina_64.png"},{"name":"Player 9","id":"9","flag":"58px-Jaina_64.png"},{"name":"Player 10","id":"10","flag":"58px-Jaina_64.png"},{"name":"Player 11","id":"11","flag":"58px-Jaina_64.png"},{"name":"Player 12","id":"12","flag":"58px-Jaina_64.png"},{"name":"Player 13","id":"13","flag":"58px-Jaina_64.png"},{"name":"Player 14","id":"14","flag":"58px-Jaina_64.png"},{"name":"Player 15","id":"15","flag":"58px-Jaina_64.png"},{"name":"Player 16","id":"16","flag":"58px-Jaina_64.png"},{"name":"Player 17","id":"17","flag":"58px-Jaina_64.png"},{"name":"Player 18","id":"18","flag":"58px-Jaina_64.png"},{"name":"Player 19","id":"19","flag":"58px-Jaina_64.png"}]]');
-		var SEsampleTournamentData = JSON.parse('{"type":"SE", "conferences":[{"matches":[[{"team1":{"id":"6","score":4},"team2":{"id":"15","score":1},"meta":{"matchId":"match-C1-1-1"},"details":{}},{"team1":{"id":"202","score":0},"team2":{"id":"18","score":1},"meta":{"matchId":"match-C1-1-2","UIShiftDown":2},"details":{}},{"team1":{"id":"7","score":3},"team2":{"id":"13","score":2},"meta":{"matchId":"match-C1-1-3","UIShiftDown":3},"details":{}}],[{"team1":{"id":"17","score":0},"team2":{"id":"6","score":3},"meta":{"matchId":"match-C1-2-1","matchType":1}},{"team1":{"id":"101","score":3},"team2":{"id":"11","score":1},"meta":{"matchId":"match-C1-2-2","matchType":2},"details":{}},{"team1":{"id":"4","score":""},"team2":{"id":"10","score":""},"meta":{"matchId":"match-C1-2-3","matchType":2},"details":{}},{"team1":{"id":"3","score":1},"team2":{"id":"18","score":2},"meta":{"matchId":"match-C1-2-4","matchType":1},"details":{}},{"team1":{"id":"16","score":""},"team2":{"id":"14","score":""},"meta":{"matchId":"match-C1-2-5","matchType":2},"details":{}},{"team1":{"id":"9","score":""},"team2":{"id":"7","score":""},"meta":{"matchId":"match-C1-2-6","matchType":1},"details":{}},{"team1":{"id":"12","score":""},"team2":{"id":"8","score":""},"meta":{"matchId":"match-C1-2-7","matchType":2},"details":{}},{"team1":{"id":"19","score":""},"team2":{"id":"5","score":""},"meta":{"matchId":"match-C1-2-8","matchType":2},"details":{}}],[{"team1":{"id":"6","score":""},"team2":{"id":"101","score":""},"meta":{"matchId":"match-C1-3-1"},"details":{}},{"team1":{"id":"","score":""},"team2":{"id":"18","score":""},"meta":{"matchId":"match-C1-3-2"},"details":{}},{"team1":{"id":"","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-3-3"},"details":{}},{"team1":{"id":"","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-3-4"},"details":{}}],[{"team1":{"id":"","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-4-1"},"details":{}},{"team1":{"id":"","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-4-2"},"details":{}}],[{"team1":{"id":"","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-5-1","matchType":"finals"},"details":{}},{"team1":{"id":"","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-5-2","matchType":"bronze"},"details":{}}]]}],"properties":{"status":"In progress","unbalanced":false}}');
+		var SEsampleTeamsData = JSON.parse('[[{"name":"a","id":"1","flag":"58px-Anduin_64.png","members":[]},{"name":"a1","id":"2","flag":"58px-Anduin_64.png","members":[]},{"name":"a12","id":"3","flag":"58px-Anduin_64.png","members":[]},{"name":"a123","id":"4","flag":"58px-Anduin_64.png","members":[]},{"name":"a1234","id":"5","flag":"58px-Anduin_64.png","members":[]},{"name":"a12345","id":"6","flag":"58px-Anduin_64.png","members":[]}]]');
+		var SEsampleTournamentData = JSON.parse('{"type":"SE","conferences":[{"matches":[[{"team1":{"id":"1","score":""},"team2":{"id":"2","score":""},"meta":{"matchId":"match-C1-1-1"},"details":{}},{"team1":{"id":"3","score":""},"team2":{"id":"4","score":""},"meta":{"matchId":"match-C1-1-2"},"details":{}}],[{"team1":{"id":"5","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-2-1","matchType":1},"details":{}},{"team1":{"id":"6","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-2-2","matchType":1},"details":{}}],[{"team1":{"id":"","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-3-1","matchType":"finals"},"details":{}},{"team1":{"id":"","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-3-2","matchType":"bronze"},"details":{}}]]}],"properties":{"status":"Not started"}}');
 
-        console.log("SEsampleTeamsData", SEsampleTeamsData);
-        console.log("SEsampleTournamentData", SEsampleTournamentData);
+        //console.log("SEsampleTeamsData", SEsampleTeamsData);
+        //console.log("SEsampleTournamentData", SEsampleTournamentData);
 
 
             $scope.SEsampleTeamsData = SEsampleTeamsData;
@@ -247,14 +248,19 @@ app
 
 		$scope.teamsJson = '[[{"name":"Player 1","id":"1","flag":"58px-Anduin_64.png"},{"name":"Player 2","id":"2","flag":"58px-Anduin_64.png"},{"name":"Player 3","id":"3","flag":"58px-Guldan_64.png"},{"name":"Player 4","id":"4","flag":"58px-Jaina_64.png"},{"name":"Player 5","id":"5","flag":"58px-Malfurion_64.png"},{"name":"Player 6","id":"6","flag":"58px-Malfurion_64.png"},{"name":"Player 7","id":"7","flag":"58px-Malfurion_64.png"},{"name":"Player 8","id":"8","flag":"58px-Jaina_64.png"},{"name":"Player 9","id":"9","flag":"aut.png"},{"name":"Player 10","id":"10","flag":"58px-Jaina_64.png"},{"name":"Player 11","id":"11","flag":"58px-Jaina_64.png"},{"name":"Player 12","id":"12","flag":"58px-Jaina_64.png"},{"name":"Player 13","id":"13","flag":"58px-Jaina_64.png"},{"name":"Player 14","id":"14","flag":"58px-Jaina_64.png"},{"name":"Player 15","id":"15","flag":"swe.png"},{"name":"Player 16","id":"16","flag":"58px-Jaina_64.png"},{"name":"Player 17","id":"17","flag":"58px-Jaina_64.png"},{"name":"Player 18","id":"18","flag":"58px-Jaina_64.png"},{"name":"Player 19","id":"19","flag":"58px-Jaina_64.png"},{"name":"Player 20","id":"20","flag":"58px-Jaina_64.png"},{"name":"Player 21","id":"21","flag":"58px-Jaina_64.png"},{"name":"Player 22","id":"22","flag":"58px-Jaina_64.png"}]]';
 
-        $scope.attendants = tournamentAttendants.query(function() {
-            $scope.attendants = "[" + JSON.stringify($scope.attendants) + "]";
+        var attendants = tournamentAttendantsById.query({id:3}, function() {
+            attendants = "[" + JSON.stringify(attendants) + "]";
         });
-        var matches = tournamentMatches.query(function() {
-            console.log("length: ",  JSON.stringify(matches));
+        var tournamentData = tournamentDataById.query({id:3}, function() {
+            startTournament(tournamentData, JSON.parse(attendants));
         });
-        console.log($scope.attendants);
-        console.log(matches);
-        $scope.matches = matches;
+
+
+            $scope.at = attendants;
+            $scope.td = tournamentData;
+
+        console.log(attendants);
+        console.log(tournamentData);
+
 
   }]);

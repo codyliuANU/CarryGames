@@ -11,7 +11,7 @@ class Tournament(models.Model):
 
 class Properties(models.Model):
     status = models.CharField(max_length=20)
-    unbalanced = models.CharField(max_length=10)
+    unbalanced = models.CharField(max_length=10, null=True)
 
 
 class TournamentData(models.Model):
@@ -39,8 +39,8 @@ class Contestant(models.Model):
 
 class Meta(models.Model):
     matchId = models.CharField(max_length=15)
-    UIShiftDown = models.PositiveIntegerField()
-    matchType = models.CharField(max_length=20)
+    UIShiftDown = models.PositiveIntegerField(null=True)
+    matchType = models.CharField(max_length=20, null=True)
 
 
 class Round(models.Model):

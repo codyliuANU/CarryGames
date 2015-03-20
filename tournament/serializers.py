@@ -1,6 +1,29 @@
+from collections import OrderedDict
 from rest_framework import serializers
+from rest_framework.fields import SkipField
 import tournament
 from tournament.models import Contestant, Match, Attendant, TournamentData, Conference, Round, Properties
+
+
+class NonNullSerializer(serializers.ModelSerializer):
+
+    def to_representation(self, instance):
+        """
+        Object instance -> Dict of primitive datatypes.
+        """
+        ret = OrderedDict()
+        fields = [field for field in self.fields.values() if not field.write_only]
+
+        for field in fields:
+            try:
+                attribute = field.get_attribute(instance)
+            except SkipField:
+                continue
+
+            if attribute is not None:
+                ret[field.field_name] = field.to_representation(attribute)
+
+        return ret
 
 
 class ContestantSerializer(serializers.ModelSerializer):
@@ -11,7 +34,7 @@ class ContestantSerializer(serializers.ModelSerializer):
         fields = ('id', 'score')
 
 
-class MetaSerializer(serializers.ModelSerializer):
+class MetaSerializer(NonNullSerializer):
     class Meta:
         model = tournament.models.Meta
         fields = ('matchId', 'UIShiftDown', 'matchType')
@@ -53,7 +76,7 @@ class ConferenceSerializer(serializers.ModelSerializer):
         fields = ('matches',)
 
 
-class PropertiesSerializer(serializers.ModelSerializer):
+class PropertiesSerializer(NonNullSerializer):
     class Meta:
         model = Properties
         fields = ('status', 'unbalanced')
