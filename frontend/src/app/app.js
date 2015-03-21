@@ -17,7 +17,8 @@ var app = angular.module('app', [
         'pascalprecht.translate',
         'djangoAuthModule',
         'djangoTournamentModule',
-        'ngBracket'
+        'ngBracket',
+        'filters-module'
     ])
 
     /**

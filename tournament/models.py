@@ -40,7 +40,7 @@ class Contestant(models.Model):
 class Meta(models.Model):
     matchId = models.CharField(max_length=15)
     UIShiftDown = models.PositiveIntegerField(null=True)
-    matchType = models.CharField(max_length=20, null=True)
+    matchType = models.PositiveIntegerField(null=True)
 
 
 class Round(models.Model):

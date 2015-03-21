@@ -235,8 +235,12 @@ app
 		};
 
 		// Dummy data untill there's a service to fetch data from db.
-		var SEsampleTeamsData = JSON.parse('[[{"name":"a","id":"1","flag":"58px-Anduin_64.png","members":[]},{"name":"a1","id":"2","flag":"58px-Anduin_64.png","members":[]},{"name":"a12","id":"3","flag":"58px-Anduin_64.png","members":[]},{"name":"a123","id":"4","flag":"58px-Anduin_64.png","members":[]},{"name":"a1234","id":"5","flag":"58px-Anduin_64.png","members":[]},{"name":"a12345","id":"6","flag":"58px-Anduin_64.png","members":[]}]]');
-		var SEsampleTournamentData = JSON.parse('{"type":"SE","conferences":[{"matches":[[{"team1":{"id":"1","score":""},"team2":{"id":"2","score":""},"meta":{"matchId":"match-C1-1-1"},"details":{}},{"team1":{"id":"3","score":""},"team2":{"id":"4","score":""},"meta":{"matchId":"match-C1-1-2"},"details":{}}],[{"team1":{"id":"5","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-2-1","matchType":1},"details":{}},{"team1":{"id":"6","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-2-2","matchType":1},"details":{}}],[{"team1":{"id":"","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-3-1","matchType":"finals"},"details":{}},{"team1":{"id":"","score":""},"team2":{"id":"","score":""},"meta":{"matchId":"match-C1-3-2","matchType":"bronze"},"details":{}}]]}],"properties":{"status":"Not started"}}');
+		var SEsampleTeamsData = JSON.parse('[[{"name":"battle_tag1","id":30,"flag":"58px-Anduin_64.png"},{"name":"battle_tag2","id":31,"flag":"58px-Anduin_64.png"},{"name":"battle_tag3","id":32,"flag":"58px-Anduin_64.png"},{"name":"battle_tag4","id":33,"flag":"58px-Anduin_64.png"},{"name":"battle_tag5","id":34,"flag":"58px-Anduin_64.png"},{"name":"battle_tag6","id":35,"flag":"58px-Anduin_64.png"}]]');
+		var SEsampleTournamentData = JSON.parse('{"type":"SE","conferences":[{"matches":[[{"team1":{"id":30,"score":1},"team2":{"id":31,"score":2},"meta":{"matchId":"match-C1-1-1"}},{"team1":{"id":32,"score":3},"team2":{"id":33,"score":5},"meta":{"matchId":"match-C1-1-2"}}],[{"team1":{"id":34,"score":1},"team2":{"id":31,"score":2},"meta":{"matchId":"match-C1-2-1","matchType":1}},{"team1":{"id":35,"score":2},"team2":{"id":33,"score":1},"meta":{"matchId":"match-C1-2-2","matchType":1}}],[{"team1":{"id":31,"score":1},"team2":{"id":35,"score":2},"meta":{"matchId":"match-C1-3-1","matchType":"finals"}},{"team1":{"id":34,"score":2},"team2":{"id":33,"score":4},"meta":{"matchId":"match-C1-3-2","matchType":"bronze"}}]]}],"properties":{"status":"In progress"}}');
+
+		// Dummy data untill there's a service to fetch data from db.
+		//var SEsampleTeamsData = JSON.parse('[[{"name":"Team 1","id":"30","flag":"","members":[]},{"name":"Team 2","id":"31","flag":"","members":[]},{"name":"Team 3","id":"32","flag":"","members":[]},{"name":"Team 4","id":"33","flag":"","members":[]},{"name":"Team 5","id":"34","flag":"","members":[]},{"name":"Team 6","id":"35","flag":"","members":[]}]]');
+		var SEsampleTournamentData = JSON.parse('{"type":"SE","conferences":[{"matches":[[{"team1":{"id":"30","score":1},"team2":{"id":"31","score":2},"meta":{"matchId":"match-C1-1-1"},"details":{}},{"team1":{"id":"32","score":3},"team2":{"id":"33","score":5},"meta":{"matchId":"match-C1-1-2"},"details":{}}],[{"team1":{"id":"34","score":1},"team2":{"id":"31","score":2},"meta":{"matchId":"match-C1-2-1","matchType":1},"details":{}},{"team1":{"id":"35","score":2},"team2":{"id":"33","score":1},"meta":{"matchId":"match-C1-2-2","matchType":1},"details":{}}],[{"team1":{"id":"31","score":1},"team2":{"id":"35","score":2},"meta":{"matchId":"match-C1-3-1","matchType":"finals"},"details":{}},{"team1":{"id":"34","score":2},"team2":{"id":"33","score":4},"meta":{"matchId":"match-C1-3-2","matchType":"bronze"},"details":{}}]]}],"properties":{"status":"In progress"}}');
 
         //console.log("SEsampleTeamsData", SEsampleTeamsData);
         //console.log("SEsampleTournamentData", SEsampleTournamentData);
@@ -261,6 +265,11 @@ app
 
         console.log(attendants);
         console.log(tournamentData);
+       /* var tournament_name = "la0rg_test2";
 
+        $scope.frame_url = "http://challonge.com/"+ tournament_name +"/module?multiplier=1.0&amp;match_width_multiplier=1.0&amp;show_final_results=0&amp;show_standings=0&amp;theme=3156&amp;subdomain=";
 
+        $scope.getSrc = function() {
+            return $sce.trustAsResourceUrl("http://challonge.com/"+ tournament_name +"/module?multiplier=1.0&amp;match_width_multiplier=1.0&amp;show_final_results=0&amp;show_standings=0&amp;theme=3156&amp;subdomain=");
+        };*/
   }]);

@@ -55,6 +55,7 @@
     max-height: 71px;
     box-sizing: content-box;
     -webkit-box-sizing: content-box;
+    border-radius: 7px;
   }
   #ngBracket .tbd {
     border-color: #ddd;
@@ -68,6 +69,8 @@
     display: table;
     box-sizing: content-box;
     -webkit-box-sizing: content-box;
+    color: #F2F2F2;
+    background-color: #909090;
   }
     #ngBracket .team .teamname {
       display: table-cell;
@@ -107,21 +110,26 @@
       -webkit-box-sizing: content-box;
     }
   #ngBracket .loser {
-    background-color: #d3d3d3;
-    color: #b2b2b2; }
+    color: #b2b2b2;
+  }
     #ngBracket .loser .score {
-      color: #B22222; }
+      //color: #BA7265;
+      background-color: #D3CFE9;
+    }
   #ngBracket .highlight {
-    background-color: #eea; }
+    background-color: #BA7265;
+  }
   #ngBracket .gold {
-    background-color: #FFFF9B;
-    box-shadow: 0px 0px 5px #FFFF9B; }
+    background-color: #65BA72;
+    color: #58666e;
+    //box-shadow: 0px 0px 5px #65BA72;
+  }
     #ngBracket .gold.connector {
       background-color: transparent;
-      border-color: #FFFF9B;
+      border-color: #65BA72;
       z-index: 10; }
   #ngBracket .finals.gold:after {
-    background-image: url("static/assets/img/gold_medal.png");
+    background-image: url("img/gold_medal.png");
     background-size: 25px;
     min-height: 25px;
     min-width: 25px;
@@ -134,7 +142,7 @@
     -webkit-box-sizing: content-box;
   }
   #ngBracket .finals.silver:after {
-    background-image: url("static/assets/img/silver_medal.png");
+    background-image: url("img/silver_medal.png");
     background-size: 25px;
     min-height: 25px;
     min-width: 25px;
@@ -147,7 +155,7 @@
     -webkit-box-sizing: content-box;
   }
   #ngBracket .finals.bronze:after {
-    background-image: url("static/assets/img/bronze_medal.png");
+    background-image: url("img/bronze_medal.png");
     background-size: 25px;
     min-height: 25px;
     min-width: 25px;
@@ -169,13 +177,13 @@
     display: inline-block;
     float: right;
     font-weight: bold;
-    background-color: #efefef;
     text-align: center;
     width: 30px;
     height: 35px;
     vertical-align: middle;
     box-sizing: content-box;
     -webkit-box-sizing: content-box;
+    background-color: #65BA72;
   }
     #ngBracket .score input {
       font-weight: bold;
@@ -224,11 +232,13 @@
       z-index: -1;
       position: absolute; }
     #ngBracket .connectors .highlight {
-      border-color: #0f0;
+      border-color: #BA7265;
       background-color: transparent;
-      z-index: 2; }
+      z-index: 2;
+    }
     #ngBracket .connectors .finals-winner {
-      border-color: gold; }
+      border-color: gold;
+    }
   #ngBracket .connectorBottom {
     border-bottom: 2px solid; }
   #ngBracket .connectorLeft {
@@ -237,3 +247,28 @@
     border-top: 2px solid; }
   #ngBracket .connectorRight {
     border-right: 2px solid; }
+
+
+  //Radius
+  #ngBracket .topRadius .flag {
+    border-top-left-radius: 7px;
+  }
+  #ngBracket .topRadius .score {
+    border-top-right-radius: 7px;
+  }
+  #ngBracket .topRadius.team {
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+  }
+
+
+  #ngBracket .bottomRadius .flag {
+    border-bottom-left-radius: 7px;
+  }
+  #ngBracket .bottomRadius .score {
+    border-bottom-right-radius: 7px;
+  }
+  #ngBracket .bottomRadius.team {
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+  }

@@ -5,6 +5,21 @@ import tournament
 from tournament.models import Contestant, Match, Attendant, TournamentData, Conference, Round, Properties
 
 
+def num(s):
+    try:
+        return int(s)
+    except ValueError:
+        return float(s)
+
+
+class ToTextField(serializers.Field):
+    def to_internal_value(self, data):
+        pass
+
+    def to_representation(self, value):
+        return str(value)
+
+
 class NonNullSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
@@ -27,14 +42,27 @@ class NonNullSerializer(serializers.ModelSerializer):
 
 
 class ContestantSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField(source='account.id')
+    id = ToTextField(source='account.id')
 
     class Meta:
         model = Contestant
         fields = ('id', 'score')
 
 
+class MatchTypeField(serializers.Field):
+    def to_representation(self, value):
+        if value.isdigit():
+            return num(value)
+        else:
+            return value
+
+    def to_internal_value(self, data):
+        pass
+
+
 class MetaSerializer(NonNullSerializer):
+    matchType = MatchTypeField()
+
     class Meta:
         model = tournament.models.Meta
         fields = ('matchId', 'UIShiftDown', 'matchType')
@@ -93,7 +121,7 @@ class TournamentDataSerializer(serializers.ModelSerializer):
 
 class AttendantSerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField(source='account.battle_tag')
-    id = serializers.ReadOnlyField(source='account.id')
+    id = ToTextField(source='account.id')
     flag = serializers.ReadOnlyField(source='gameClass')
 
     class Meta:
