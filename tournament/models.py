@@ -22,7 +22,11 @@ class Tournament(models.Model):
     def create_match(round_number, match_number, conference):
         meta = Meta(matchId="match-"+conference+'-'+str(round_number)+'-'+str(match_number))
         meta.save()
-        return Match(meta=meta)
+        contestant1 = Contestant()
+        contestant1.save()
+        contestant2 = Contestant()
+        contestant2.save()
+        return Match(meta=meta, contestant1=contestant1, contestant2=contestant2)
 
     @staticmethod
     def get_even_distribution(round_len, number_of_attendants, promoted_round):
@@ -74,10 +78,15 @@ class Tournament(models.Model):
                 # normal brackets untill reaching biggest possible balanced tree...
                 if index % 2 != 0:
                     continue
-                match.contestant1 = Contestant(account=attendant.account)
-                match.contestant2 = Contestant(account=attendants[index+1].account)
-
+                # c1 = Contestant(account=attendant.account)
+                # c1.save()
+                # match.contestant1_id = c1.id
+                match.contestant1.account = attendant.account
                 match.contestant1.save()
+                # c2 = Contestant(account=attendants[index+1].account)
+                # c2.save()
+                # match.contestant2_id = c2.id
+                match.contestant2.account = attendants[index+1].account
                 match.contestant2.save()
 
             elif index % 2 != 0:
@@ -97,9 +106,13 @@ class Tournament(models.Model):
             if shifted_matches == 0:
                 for bal_round in balancing_round:
                     match = self.create_match(round_number=round_number + 1, match_number=round_b.matches.all().__len__() + 1, conference=conference)
-                    match.contestant1 = Contestant(account=bal_round.account)
+                    # c1 = Contestant(account=bal_round.account)
+                    # c1.save()
+                    # match.contestant1_id = c1.id
+                    match.contestant1.account = bal_round.account
                     match.contestant1.save()
-                    match.meta.matchType = 1
+                    match.meta.matchType = '1'
+                    match.meta.save()
                     round_b.save()
                     round_b.matches.add(match)
             elif shifted_matches > 0:
@@ -108,9 +121,13 @@ class Tournament(models.Model):
                 for i in range(0, dist.__len__()):
                     match = self.create_match(round_number=round_number + 1, match_number=round_b.matches.all().__len__() + 1, conference=conference)
                     if dist[i] == 1:
-                        match.contestant1 = Contestant(account=balancing_round[p].account)
+                        # c1 = Contestant(account=balancing_round[p].account)
+                        # c1.save()
+                        # match.contestant1_id = c1.id
+                        match.contestant1.account = balancing_round[p].account
                         match.contestant1.save()
-                        match.meta.matchType = 1
+                        match.meta.matchType = '1'
+                        match.meta.save()
                         p += 1
                     round_b.save()
                     round_b.matches.add(match)
@@ -119,14 +136,22 @@ class Tournament(models.Model):
                 j = 0
                 for i in range(0, closest_balance_tree / 2):
                     match = self.create_match(round_number=round_number + 1, match_number=round_b.matches.all().__len__() + 1, conference=conference)
-                    match.contestant1 = Contestant(account=balancing_round[j].account)
+                    # c1 = Contestant(account=balancing_round[j].account)
+                    # c1.save()
+                    # match.contestant1_id = c1.id
+                    match.contestant1.account = balancing_round[j].account
                     match.contestant1.save()
-                    match.meta.matchType = 1
+                    match.meta.matchType = '1'
+                    match.meta.save()
 
                     if dist[i] == 2:
-                        match.contestant2 = Contestant(account=balancing_round[j+1].account)
+                        # c2 = Contestant(account=balancing_round[j+1].account)
+                        # c2.save()
+                        # match.contestant2_id = c2.id
+                        match.contestant2.account = balancing_round[j+1].account
                         match.contestant2.save()
-                        match.meta.matchType = 2
+                        match.meta.matchType = '2'
+                        match.meta.save()
                         self.shift_previous_round(round_b, new_round)
                         j += 1
                     j += 1
@@ -159,14 +184,17 @@ class Tournament(models.Model):
             round_number = td_conference.rounds.all().__len__() + 1
 
         rounds = list(self.tournamentdata_set.last().conferences.last().rounds.all())
-        rounds[rounds.__len__() - 1].matches.last().meta.matchType = 'finals'
+        meta = rounds[rounds.__len__() - 1].matches.last().meta
+        meta.matchType = 'finals'
+        meta.save()
 
         if play_bronze_match:
             bronze_match = self.create_match(rounds.__len__(), rounds[rounds.__len__() - 1].matches.all().__len__() + 1, conference)
             bronze_match.meta.matchType = 'bronze'
+            bronze_match.meta.save()
 
             rounds[rounds.__len__() - 1].save()
-            rounds[rounds.__len__() - 1].add(bronze_match)
+            rounds[rounds.__len__() - 1].matches.add(bronze_match)
 
     def generate(self, play_bronze_match):
         attendants = list(self.attendant_set.all())
@@ -203,13 +231,13 @@ class Attendant(models.Model):
 
 class Contestant(models.Model):
     account = models.ForeignKey(Account, null=True)
-    score = models.IntegerField(default=0)
+    score = models.CharField(max_length=2, default="")
 
 
 class Meta(models.Model):
     matchId = models.CharField(max_length=15)
     UIShiftDown = models.PositiveIntegerField(null=True)
-    matchType = models.PositiveIntegerField(null=True)
+    matchType = models.CharField(max_length=10, null=True)
 
 
 class Round(models.Model):
@@ -218,15 +246,14 @@ class Round(models.Model):
 
 class Match(models.Model):
     round = models.ForeignKey(Round, related_name='matches', null=True)
-    contestant1 = models.OneToOneField(Contestant, related_name='contestant1', null=True)
-    contestant2 = models.OneToOneField(Contestant, related_name='contestant2', null=True)
+    contestant1 = models.OneToOneField(Contestant, related_name='contestant1')
+    contestant2 = models.OneToOneField(Contestant, related_name='contestant2')
     meta = models.OneToOneField(Meta, related_name='meta')
-
-
 
 
 class Reporter(models.Model):
     pass
+
 
 class Article(models.Model):
     text = models.CharField(max_length=10)

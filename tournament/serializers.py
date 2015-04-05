@@ -37,11 +37,13 @@ class NonNullSerializer(serializers.ModelSerializer):
 
             if attribute is not None:
                 ret[field.field_name] = field.to_representation(attribute)
+            elif field.field_name == "id":
+                ret[field.field_name] = ""
 
         return ret
 
 
-class ContestantSerializer(serializers.ModelSerializer):
+class ContestantSerializer(NonNullSerializer):
     id = ToTextField(source='account.id')
 
     class Meta:
@@ -51,9 +53,12 @@ class ContestantSerializer(serializers.ModelSerializer):
 
 class MatchTypeField(serializers.Field):
     def to_representation(self, value):
-        if value.isdigit():
-            return num(value)
-        else:
+        try:
+            if value.isdigit():
+                return num(value)
+            else:
+                return value
+        except AttributeError:
             return value
 
     def to_internal_value(self, data):
@@ -68,7 +73,7 @@ class MetaSerializer(NonNullSerializer):
         fields = ('matchId', 'UIShiftDown', 'matchType')
 
 
-class MatchSerializer(serializers.ModelSerializer):
+class MatchSerializer(NonNullSerializer):
     team1 = ContestantSerializer(source='contestant1')
     team2 = ContestantSerializer(source='contestant2')
     meta = MetaSerializer()

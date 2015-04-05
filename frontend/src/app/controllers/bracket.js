@@ -252,10 +252,10 @@ app
 
 		$scope.teamsJson = '[[{"name":"Player 1","id":"1","flag":"58px-Anduin_64.png"},{"name":"Player 2","id":"2","flag":"58px-Anduin_64.png"},{"name":"Player 3","id":"3","flag":"58px-Guldan_64.png"},{"name":"Player 4","id":"4","flag":"58px-Jaina_64.png"},{"name":"Player 5","id":"5","flag":"58px-Malfurion_64.png"},{"name":"Player 6","id":"6","flag":"58px-Malfurion_64.png"},{"name":"Player 7","id":"7","flag":"58px-Malfurion_64.png"},{"name":"Player 8","id":"8","flag":"58px-Jaina_64.png"},{"name":"Player 9","id":"9","flag":"aut.png"},{"name":"Player 10","id":"10","flag":"58px-Jaina_64.png"},{"name":"Player 11","id":"11","flag":"58px-Jaina_64.png"},{"name":"Player 12","id":"12","flag":"58px-Jaina_64.png"},{"name":"Player 13","id":"13","flag":"58px-Jaina_64.png"},{"name":"Player 14","id":"14","flag":"58px-Jaina_64.png"},{"name":"Player 15","id":"15","flag":"swe.png"},{"name":"Player 16","id":"16","flag":"58px-Jaina_64.png"},{"name":"Player 17","id":"17","flag":"58px-Jaina_64.png"},{"name":"Player 18","id":"18","flag":"58px-Jaina_64.png"},{"name":"Player 19","id":"19","flag":"58px-Jaina_64.png"},{"name":"Player 20","id":"20","flag":"58px-Jaina_64.png"},{"name":"Player 21","id":"21","flag":"58px-Jaina_64.png"},{"name":"Player 22","id":"22","flag":"58px-Jaina_64.png"}]]';
 
-        var attendants = tournamentAttendantsById.query({id:3}, function() {
+        var attendants = tournamentAttendantsById.query({id:28}, function() {
             attendants = "[" + JSON.stringify(attendants) + "]";
         });
-        var tournamentData = tournamentDataById.query({id:3}, function() {
+        var tournamentData = tournamentDataById.query({id:28}, function() {
             startTournament(tournamentData, JSON.parse(attendants));
         });
 
