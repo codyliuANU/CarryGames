@@ -1,10 +1,38 @@
 <!-- list -->
 <ul class="nav">
   <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
-    <span translate="aside.nav.HEADER">Navigation</span>
+    <span translate="aside.nav.HEADER">Меню</span>
+  </li>
+    <li>
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class=" icon-trophy text-primary-dker"></i>
+      <span class="font-bold">Турниры</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li class="nav-sub-header">
+        <a href>
+          <span>Турниры</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.tournaments.all">
+          <span>Все турниры</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="app.tournaments.new">
+            <i class="fa fa-plus pull-right text-info"></i>
+            <span>Создать</span>
+        </a>
+      </li>
+    </ul>
   </li>
   <li>
-    <a href class="auto">      
+    <a href class="auto">
       <span class="pull-right text-muted">
         <i class="fa fa-fw fa-angle-right text"></i>
         <i class="fa fa-fw fa-angle-down text-active"></i>
@@ -83,7 +111,7 @@
     <span translate="aside.nav.components.COMPONENTS">Components</span>
   </li>
   <li>
-    <a href class="auto">      
+    <a href class="auto">
       <span class="pull-right text-muted">
         <i class="fa fa-fw fa-angle-right text"></i>
         <i class="fa fa-fw fa-angle-down text-active"></i>
@@ -112,7 +140,7 @@
         <a ui-sref="layout.mobile">
           <span>Mobile</span>
         </a>
-      </li>      
+      </li>
     </ul>
   </li>
   <li ng-class="{active:$state.includes('app.ui')}">
@@ -372,9 +400,9 @@
 
   <li class="line dk hidden-folded"></li>
 
-  <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">          
+  <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
     <span translate="aside.nav.your_stuff.YOUR_STUFF">Your Stuff</span>
-  </li>  
+  </li>
   <li>
     <a ui-sref="app.page.profile">
       <i class="icon-user icon text-success-lter"></i>

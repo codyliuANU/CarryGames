@@ -25,6 +25,7 @@
           </form>
         </div>
       </div>
+      </div>
     </div>
     <div class="col-sm-6">
       <div class="panel panel-default">
@@ -592,7 +593,7 @@
           <label class="col-sm-2 control-label">Spinner</label>
           <div class="col-sm-10">
             <div class="m-b">
-              <input ui-jq="TouchSpin" type="text" value="0" class="form-control" data-min='0' data-max="10" data-step="0.1" data-decimals="2" data-prefix="$">
+              <input ui-jq="TouchSpin" type="text" value="0" class="form-control" data-min='0' data-max="1000" data-step="0.1" data-decimals="2" data-prefix="₽">
             </div>
             <div class="m-b">
               <input ui-jq="TouchSpin" type="text" value="5" class="form-control" data-min='0' data-max="10" data-step="0.1" data-decimals="2" data-postfix="%">
@@ -687,7 +688,7 @@
           <label class="col-sm-2 control-label">Datepicker</label>
           <div class="col-sm-10" ng-controller="DatepickerDemoCtrl">
             <div class="input-group w-md">
-              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+              <input type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="dt" is-open="opened" datepicker-options="dateOptions" ng-required="true" />
               <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
               </span>

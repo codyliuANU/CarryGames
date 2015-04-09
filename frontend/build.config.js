@@ -136,7 +136,8 @@ module.exports = {
         'vendor/jquery/fullcalendar/fullcalendar.min.js',
 
         //'vendor/ngBracket/ngBracket.min.js',
-        'vendor/jquery/challonge-jquery-plugin-master/jquery.challonge.js'
+        'vendor/jquery/challonge-jquery-plugin-master/jquery.challonge.js',
+        'vendor/angular-i18n/angular-locale_ru-ru.js'
     ],
     css: [
         'vendor/jquery/nestable/nestable.css',

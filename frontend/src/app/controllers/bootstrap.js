@@ -240,7 +240,7 @@
     $scope.today = function() {
       $scope.dt = new Date();
     };
-    $scope.today();
+    //$scope.today();
 
     $scope.clear = function () {
       $scope.dt = null;
@@ -263,15 +263,19 @@
       $scope.opened = true;
     };
 
+      $scope.minDate = new Date();
+
     $scope.dateOptions = {
       formatYear: 'yy',
       startingDay: 1,
-      class: 'datepicker'
+      class: 'datepicker',
+        showWeeks:'false'
     };
+
 
     $scope.initDate = new Date('2016-15-20');
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-    $scope.format = $scope.formats[0];
+    $scope.format = $scope.formats[2];
   }])
   ; 
   app.controller('TimepickerDemoCtrl', ['$scope', function($scope) {

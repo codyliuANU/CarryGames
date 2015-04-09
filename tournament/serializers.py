@@ -2,7 +2,7 @@ from collections import OrderedDict
 from rest_framework import serializers
 from rest_framework.fields import SkipField
 import tournament
-from tournament.models import Contestant, Match, Attendant, TournamentData, Conference, Round, Properties
+from tournament.models import Contestant, Match, Attendant, TournamentData, Conference, Round, Properties, Tournament
 
 
 def num(s):
@@ -132,5 +132,11 @@ class AttendantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Attendant
         fields = ('name', 'id', 'flag')
+
+
+class TournamentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tournament
+        fields = ('name',)
 
 

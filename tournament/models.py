@@ -5,6 +5,14 @@ from authentication.models import Account
 # Base tournament description
 class Tournament(models.Model):
     name = models.CharField(max_length=80)
+    allmatches = models.CharField(max_length=3)
+    semi = models.CharField(max_length=3)
+    finals = models.CharField(max_length=3)
+    maxplayers = models.PositiveIntegerField(max_length=3)
+    rules = models.TextField()
+    date = models.DateField()
+    time = models.TimeField()
+    fare = models.IntegerField(max_length=4)
 
     @classmethod
     def create(cls, name, t_type="SE"):

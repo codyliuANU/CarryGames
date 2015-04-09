@@ -1,0 +1,43 @@
+<div class="bg-light lter b-b wrapper-md">
+    <a href class="btn btn-info btn-addon pull-right"><i class="fa fa-plus"></i>Новый турнир</a>
+    <h1 class="m-n font-thin h3">Список текущих турниров</h1>
+</div>
+<div ng-controller="TournamentsController" class="wrapper-md">
+    <div ng-repeat="chunk in tournaments" class="row">
+        <div ng-if="$index % 3 == 0" class="clearfix"></div>
+        <div ng-repeat="tournament in chunk" class="col-md-4">
+            <div class="panel b-a">
+                <div class="panel-heading no-border bg-primary">
+                    <span class="text-lt">Имя организатора</span>
+                </div>
+                <div class="item m-l-n-xxs m-r-n-xxs">
+                    <div class="bottom wrapper bg-gd-dk text-white t_widget_title_wrapper">
+                        <div class="text-u-c h3 m-b-sm">{{ tournament.name }}</div>
+                        <div class="h4">Призовые: 3000 <i class="fa fa-ruble"></i></div>
+                    </div>
+                    <img src="static/assets/img/img551f2216e17ef.jpg" class="img-full">
+                </div>
+                <div class="hbox text-center b-b b-light text-sm">
+                    <a href class="col padder-v b-r b-light">
+
+                        <i class="icon-users block m-b-xs fa-2x"></i>
+                        <span>Участников:<br>32/32 + 7 ожидают</span>
+                    </a>
+                    <a href class="col padder-v b-r b-light">
+                        <i class="fa fa-calendar block m-b-xs fa-2x"></i>
+                        <span>Начало:<br>10 марта, 21:00</span>
+                    </a>
+                    <a href class="col padder-v ">
+                        <i class="fa fa-globe block m-b-xs fa-2x"></i>
+                        <span>Регион:<br>RU</span>
+                    </a>
+                </div>
+                <div class="hbox text-center text-sm">
+                    <div class="col padder-v b-r b-light">
+                        <button class="btn btn-success"><i class="fa fa-check"></i> Участвовать бесплатно</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

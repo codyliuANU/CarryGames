@@ -18,12 +18,24 @@ angular.module('app')
       function ($stateProvider,   $urlRouterProvider) {
           
           $urlRouterProvider
-              .otherwise('/app/dashboard-v1');
+              .otherwise('/app/tournaments/all');
           $stateProvider
               .state('app', {
                   abstract: true,
                   url: '/app',
                   templateUrl: 'tpl/app.html'
+              })
+              .state('app.tournaments', {
+                  url: '/tournaments',
+                  template: '<div ui-view class="fade-in-up"></div>'
+              })
+              .state('app.tournaments.all', {
+                  url: '/all',
+                  templateUrl: 'tpl/tournaments.html'
+              })
+              .state('app.tournaments.new', {
+                  url: '/new',
+                  templateUrl: 'tpl/new_tournament.html'
               })
               .state('app.dashboard-v1', {
                   url: '/dashboard-v1',
