@@ -13,14 +13,25 @@ class Tournament(models.Model):
     date = models.DateField()
     time = models.TimeField()
     fare = models.IntegerField(max_length=4)
+    account = models.ForeignKey(Account)
 
     @classmethod
-    def create(cls, name, t_type="SE"):
-        tour = cls(name=name)
+    def create(cls, allmatches='Bo3', semi='Bo3', finals='Bo5', fare=0, **kwargs):
+        acc = Account.objects.get(id=kwargs['account'])
+        tour = cls(name=kwargs['name'],
+                   allmatches=allmatches,
+                   semi=semi,
+                   finals=finals,
+                   maxplayers=kwargs['maxplayers'],
+                   rules=kwargs['rules'],
+                   date=kwargs['date'],
+                   time=kwargs['time'],
+                   fare=fare,
+                   account=acc)
         tour.save()
         props = Properties(status="Not started")
         props.save()
-        tournament_data = TournamentData(type=t_type, properties=props, tournament=tour)
+        tournament_data = TournamentData(type=kwargs['format'], properties=props, tournament=tour)
         tournament_data.save()
         conference = Conference(tournamentData=tournament_data)
         conference.save()

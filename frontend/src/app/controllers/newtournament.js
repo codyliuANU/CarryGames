@@ -2,7 +2,7 @@
 
 // new tournament form controller
 app.controller('NewTournamentFormController', ['$scope', 'djangoAuth', '$state', function($scope, djangoAuth, $state) {
-    $scope.tournament = {'name':'', 'type':'',
+    $scope.tournament = {'name':'', 'format':'',
         'allmatches':'',
         'semi':'',
         'finals':'',
@@ -10,7 +10,8 @@ app.controller('NewTournamentFormController', ['$scope', 'djangoAuth', '$state',
         'rules':'',
         'date':'',
         'time':'',
-        'fare':'0'
+        'fare':'0',
+        'account': ''
     };
     $scope.result = false;
 

@@ -33,9 +33,10 @@ class TournamentDataViewSet(viewsets.GenericViewSet):
         return Response(TournamentDataSerializer(queryset).data)
 
 
-class TournamentList(viewsets.GenericViewSet):
+class TournamentViewSet(viewsets.ModelViewSet):
     queryset = Tournament.objects.all()
+    serializer_class = TournamentSerializer
 
-    def list(self, request):
-        qs = self.get_queryset()
-        return Response(TournamentSerializer(qs, many=True).data)
+    # def list(self, request):
+    #     qs = self.get_queryset()
+    #     return Response(TournamentSerializer(qs, many=True).data)

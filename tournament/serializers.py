@@ -1,6 +1,8 @@
 from collections import OrderedDict
 from rest_framework import serializers
 from rest_framework.fields import SkipField
+from authentication.models import Account
+from authentication.serializers import AccountSerializer
 import tournament
 from tournament.models import Contestant, Match, Attendant, TournamentData, Conference, Round, Properties, Tournament
 
@@ -21,7 +23,6 @@ class ToTextField(serializers.Field):
 
 
 class NonNullSerializer(serializers.ModelSerializer):
-
     def to_representation(self, instance):
         """
         Object instance -> Dict of primitive datatypes.
@@ -90,7 +91,7 @@ class RoundField(serializers.Field):
         return [MatchSerializer(r.matches, many=True).data for r in rounds]
 
     def to_internal_value(self, data):
-        return 1 #TODO: Implement method that convert json to python object
+        return 1  # TODO: Implement method that convert json to python object
 
 
 class RoundSerializer(serializers.ModelSerializer):
@@ -135,8 +136,26 @@ class AttendantSerializer(serializers.ModelSerializer):
 
 
 class TournamentSerializer(serializers.ModelSerializer):
+    acc_id = serializers.IntegerField(write_only=True)
+    format = serializers.CharField(max_length=2, write_only=True)
+
     class Meta:
         model = Tournament
-        fields = ('name',)
+        depth = 1
+        read_only_fields = ('account')
+
+    def create(self, validated_data):
+        new_tournament = Tournament.create(name=validated_data['name'],
+                                           allmatches=validated_data['allmatches'],
+                                           semi=validated_data['semi'],
+                                           finals=validated_data['finals'],
+                                           maxplayers=validated_data['maxplayers'],
+                                           rules=validated_data['rules'],
+                                           date=validated_data['date'],
+                                           time=validated_data['time'],
+                                           fare=validated_data['fare'],
+                                           account=validated_data['acc_id'],
+                                           format=validated_data['format'])
+        return new_tournament
 
 
