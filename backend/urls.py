@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from backend import settings
+from django.conf.urls.static import static
 
 urlpatterns = patterns('',
     # Examples:
@@ -12,4 +14,4 @@ urlpatterns = patterns('',
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^api/auth/', include('djoser.urls')),
     url(r'^$', 'backend.views.home', name='home'),
-)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

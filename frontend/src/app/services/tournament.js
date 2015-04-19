@@ -11,7 +11,8 @@ angular.module('djangoTournamentModule', ['djangoRESTResources'])
     }])
     .factory('tournaments', ['djResource', function (djResource) {
         return djResource('/api-v1/tournaments/', {}, {
-            query: { method:'GET', params:{}, isArray:true }
+            query: { method:'GET', params:{}, isArray:true },
+            save: { method: 'POST'}
         });
     }])
     .factory('tournamentDataById', ['djResource', function (djResource) {

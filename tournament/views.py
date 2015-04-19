@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from tournament.models import Match, Attendant, TournamentData, Tournament
 from tournament.serializers import MatchSerializer, AttendantSerializer, TournamentDataSerializer, TournamentSerializer
@@ -36,6 +36,7 @@ class TournamentDataViewSet(viewsets.GenericViewSet):
 class TournamentViewSet(viewsets.ModelViewSet):
     queryset = Tournament.objects.all()
     serializer_class = TournamentSerializer
+    #permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     # def list(self, request):
     #     qs = self.get_queryset()

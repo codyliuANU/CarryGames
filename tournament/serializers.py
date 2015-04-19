@@ -136,7 +136,6 @@ class AttendantSerializer(serializers.ModelSerializer):
 
 
 class TournamentSerializer(serializers.ModelSerializer):
-    acc_id = serializers.IntegerField(write_only=True)
     format = serializers.CharField(max_length=2, write_only=True)
 
     class Meta:
@@ -154,8 +153,10 @@ class TournamentSerializer(serializers.ModelSerializer):
                                            date=validated_data['date'],
                                            time=validated_data['time'],
                                            fare=validated_data['fare'],
-                                           account=validated_data['acc_id'],
-                                           format=validated_data['format'])
+                                           #account=self.context['request'].user,
+                                           account=28,
+                                           format=validated_data['format'],
+                                           background=validated_data['background'])
         return new_tournament
 
 

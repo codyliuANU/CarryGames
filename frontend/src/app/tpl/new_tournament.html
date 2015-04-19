@@ -2,114 +2,125 @@
     <h1 class="m-n font-thin h3">Создание нового турнира</h1>
 </div>
 <div class="wrapper-md" ng-controller="NewTournamentFormController">
-    <div ng-controller="FormDemoCtrl">
         <div class="row clearfix">
             <div class="col-md-6 col-md-offset-3 column">
                 <form name="form" class="form-validation">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                       <!-- <div class="panel-heading">
                             <span class="h4">Заполните данную форму</span>
-                        </div>
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label><b>Название</b> <em class="text-muted">('a-zA-Z0-9', длиной 4-15)</em></label>
-                                <input type="text" class="form-control" ng-model="tournament.name"
-                                       ng-pattern="/^[a-zA-Z0-9]{4,15}$/" required>
-                            </div>
-                            <div class="form-group">
-                                  <label><b>Формат</b></label>
-                                  <div class="m-b">
-                                    <select name="type" class="form-control" ng-model="tournament.format">
-                                      <option value="SE">Single elimination("Плей офф")</option>
-                                    </select>
-                                  </div>
-                                <div class="m-b">
-                                    <table class="table borderless">
-                                        <tr>
-                                            <td style="padding-left: 0px">Все матчи</td>
-                                            <td>Полуфинал</td>
-                                            <td style="padding-right: 0px">Финал</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-left: 0px">
-                                               <select name="allmatches" class="form-control" ng-model="tournament.allmatches">
-                                                    <option value="bo3">Bo3</option>
-                                                    <option value="bo5">Bo5</option>
-                                               </select>
-                                            </td>
-                                            <td>
-                                                <select name="semi" class="form-control" ng-model="tournament.semi">
-                                                    <option value="bo3">Bo3</option>
-                                                    <option value="bo5">Bo5</option>
-                                               </select>
-                                            </td>
-                                            <td style="padding-right: 0px">
-                                                <select name="finals" class="form-control" ng-model="tournament.finals">
-                                                    <option value="bo3">Bo3</option>
-                                                    <option value="bo5">Bo5</option>
-                                               </select>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Макс. количество участников</label>
-                                <div>
-                                    <input ui-jq="TouchSpin" type="text" value="12"  ng-model="tournament.maxplayers" class="form-control" data-min='6' data-max="32" data-verticalbuttons="true" data-verticalupclass="fa fa-caret-up"  data-verticaldownclass="fa fa-caret-down">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Правила и условия</label>
-                                <div>
-                                    <textarea class="form-control" rows="3" ng-model="tournament.rules"></textarea>
-                                </div>
-                            </div>
-                            <div class="line line-dashed b-b line-lg"></div>
-                            <div class="form-group" ng-controller="DatepickerDemoCtrl">
-                                <label><b>Дата и время старта</b></label>
+                        </div>-->
+                        <accordion close-others="true">
+                            <div class="panel-body">
+                                <accordion-group is-open="true">
+                                    <accordion-heading>
+                                        <span class='badge'>1</span> Название и тип турнира
+                                    </accordion-heading>
+                                    <div class="form-group">
+                                        <label>Название<em class="text-muted">('a-zA-Z0-9', длиной 4-15)</em></label>
+                                        <input type="text" class="form-control" ng-model="tournament.name"
+                                               ng-pattern="/^[a-zA-Z0-9]{4,15}$/" required>
+                                    </div>
+                                    <div class="form-group">
+                                          <label>Формат</label>
+                                          <div class="m-b">
+                                            <select name="type" class="form-control" ng-model="tournament.format">
+                                              <option value="SE">Single elimination("Плей офф")</option>
+                                            </select>
+                                          </div>
+                                        <div class="m-b">
+                                            <table class="table borderless">
+                                                <tr>
+                                                    <td style="padding-left: 0px">Все матчи</td>
+                                                    <td>Полуфинал</td>
+                                                    <td style="padding-right: 0px">Финал</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-left: 0px">
+                                                       <select name="allmatches" class="form-control" ng-model="tournament.allmatches">
+                                                            <option value="bo3">Bo3</option>
+                                                            <option value="bo5">Bo5</option>
+                                                       </select>
+                                                    </td>
+                                                    <td>
+                                                        <select name="semi" class="form-control" ng-model="tournament.semi">
+                                                            <option value="bo3">Bo3</option>
+                                                            <option value="bo5">Bo5</option>
+                                                       </select>
+                                                    </td>
+                                                    <td style="padding-right: 0px">
+                                                        <select name="finals" class="form-control" ng-model="tournament.finals">
+                                                            <option value="bo3">Bo3</option>
+                                                            <option value="bo5">Bo5</option>
+                                                       </select>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </accordion-group>
+                                <accordion-group>
+                                    <accordion-heading>
+                                        <span class='badge'>2</span> Участники, правила и время старта
+                                    </accordion-heading>
+                                    <div class="form-group">
+                                        <label>Макс. количество участников</label>
+                                        <div>
+                                            <input ui-jq="TouchSpin" type="text" value="12"  ng-model="tournament.maxplayers" class="form-control" data-min='6' data-max="32" data-verticalbuttons="true" data-verticalupclass="fa fa-caret-up"  data-verticaldownclass="fa fa-caret-down">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-controller="DatepickerDemoCtrl">
+                                        <label>Дата и время старта</label>
 
-                                <div class="input-group">
-                                    <input type="text" class="form-control sm-md-10" datepicker-popup="{{ format }}"
-                                           is-open="opened" datepicker-options="dateOptions" ng-required="true"
-                                           show-button-bar="false" min-date="minDate" ng-model="tournament.date"/>
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default" ng-click="open($event)"><i
-                                                class="glyphicon glyphicon-calendar"></i></button>
-                                    </span>
-                                </div>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control sm-md-10" datepicker-popup="{{ format }}"
+                                                   is-open="opened" datepicker-options="dateOptions" ng-required="true"
+                                                   show-button-bar="false" min-date="minDate" ng-model="tournament.date"/>
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="open($event)"><i
+                                                        class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-controller="DatepickerDemoCtrl">
+                                        <div ng-controller="TimepickerDemoCtrl">
+                                            <timepicker ng-model="tournament.time" ng-change="changed()" hour-step="1" minute-step="5" show-meridian="false"></timepicker>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Правила и условия</label>
+                                        <div>
+                                            <textarea class="form-control" rows="3" ng-model="tournament.rules"></textarea>
+                                        </div>
+                                    </div>
+                                </accordion-group>
+                                <accordion-group>
+                                    <accordion-heading>
+                                        <span class='badge'>3</span> Дополнительно
+                                    </accordion-heading>
+                                    <div class="form-group">
+                                        <label>Стоимость участия</label>
+                                        <div class="m-b">
+                                          <input ui-jq="TouchSpin" type="text" ng-model="tournament.fare" value="0" class="form-control" data-min='0' data-max="1000" data-step="5" data-decimals="0" data-prefix="<i class='fa fa-rub'></i>">
+                                        </div>
+                                    </div><br>
+                                    <div class="form-group">
+                                      <label>Обложка<em class="text-muted">(650x250px, jpg)</em></label>
+                                      <div class="m-b">
+                                        <input ui-jq="filestyle" file-model="tournament.background" type="file" data-icon="false" data-classButton="btn btn-default" data-classInput="form-control inline v-middle input-s">
+                                      </div>
+                                    </div>
+                                </accordion-group>
                             </div>
-                            <div class="form-group" ng-controller="DatepickerDemoCtrl">
-                                <div ng-controller="TimepickerDemoCtrl">
-                                    <timepicker ng-model="tournament.time" ng-change="changed()" hour-step="1" minute-step="5" show-meridian="false"></timepicker>
-                                </div>
-                            </div>
-                            <div class="line line-dashed b-b line-lg"></div>
-                            <div class="form-group">
-                                <label><b>Стоимость участия</b></label>
-                                <div class="m-b">
-                                  <input ui-jq="TouchSpin" type="text" ng-model="tournament.fare" value="0" class="form-control" data-min='0' data-max="1000" data-step="5" data-decimals="0" data-prefix="₽">
-                                </div>
-                            </div><br>
-                            <div class="form-group">
-                              <label><b>Фоновое изображение</b><em class="text-muted">(650x250px, jpg)</em></label>
-                              <div class="m-b">
-                                <input ui-jq="filestyle" type="file" data-icon="false" data-classButton="btn btn-default" data-classInput="form-control inline v-middle input-s">
-                              </div>
-                            </div><br>
-                            <div class="checkbox">
-                                <label class="i-checks">
+                        </accordion>
+                        <footer class="panel-footer text-right bg-light lter">
+                                <label class="i-checks pull-left">
                                     <input type="checkbox" ng-model="agree" required><i></i>Я прочитал и согласен с условиями
                                     <a href class="text-info">пользовательского соглашения</a>
                                 </label>
-                            </div>
-                        </div>
-                        <footer class="panel-footer text-right bg-light lter">
                             <button type="submit" class="btn btn-success" ng-click="create()" ng-disabled="form.$invalid">Создать</button>
                         </footer>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
 </div>
