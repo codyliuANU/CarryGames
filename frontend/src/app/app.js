@@ -18,7 +18,8 @@ var app = angular.module('app', [
         'djangoAuthModule',
         'djangoTournamentModule',
         'ngBracket',
-        'filters-module'
+        'filters-module',
+        'angularFileUpload'
     ])
 
     /**

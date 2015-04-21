@@ -15,7 +15,8 @@
                         <div class="text-u-c h3 m-b-sm">{{ tournament.name }}</div>
                         <div class="h4">Призовые: 3000 <i class="fa fa-ruble"></i></div>
                     </div>
-                    <img src="static/assets/img/img551f2216e17ef.jpg" class="img-full">
+                    <img ng-if="tournament.background" ng-src="{{tournament.background}}" class="img-full">
+                    <img ng-if="!tournament.background" ng-src="/static/assets/img/img551f2216e17ef.jpg" class="img-full">
                 </div>
                 <div class="hbox text-center b-b b-light text-sm">
                     <a href class="col padder-v b-r b-light">
@@ -25,7 +26,7 @@
                     </a>
                     <a href class="col padder-v b-r b-light">
                         <i class="fa fa-calendar block m-b-xs fa-2x"></i>
-                        <span>Начало:<br>10 марта, 21:00</span>
+                        <span>Начало:<br>{{ tournament.date }}, в {{ tournament.time }}</span>
                     </a>
                     <a href class="col padder-v ">
                         <i class="fa fa-globe block m-b-xs fa-2x"></i>

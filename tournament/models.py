@@ -14,7 +14,7 @@ class Tournament(models.Model):
     time = models.TimeField()
     fare = models.IntegerField(max_length=4)
     account = models.ForeignKey(Account)
-    background = models.ImageField(upload_to='tournaments_background/')
+    background = models.ImageField(upload_to='tournaments_background/', null=True)
 
     @classmethod
     def create(cls, allmatches='Bo3', semi='Bo3', finals='Bo5', fare=0, **kwargs):
