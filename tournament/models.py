@@ -15,6 +15,8 @@ class Tournament(models.Model):
     fare = models.IntegerField(max_length=4)
     account = models.ForeignKey(Account)
     background = models.ImageField(upload_to='tournaments_background/', null=True)
+    region = models.CharField(max_length=30)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     @classmethod
     def create(cls, allmatches='Bo3', semi='Bo3', finals='Bo5', fare=0, **kwargs):
@@ -30,7 +32,8 @@ class Tournament(models.Model):
                    fare=fare,
                    #account=kwargs['account']
                    account=ac,
-                   background=kwargs['background']
+                   background=kwargs['background'],
+                   region=kwargs['region']
         )
         tour.save()
         props = Properties(status="Not started")

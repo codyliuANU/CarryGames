@@ -137,11 +137,11 @@ class AttendantSerializer(serializers.ModelSerializer):
 
 class TournamentSerializer(serializers.ModelSerializer):
     format = serializers.CharField(max_length=2, write_only=True)
+    account = AccountSerializer(read_only=True)
 
     class Meta:
         model = Tournament
-        depth = 1
-        read_only_fields = ('account')
+        read_only_fields = ('account', 'created_at')
 
     def create(self, validated_data):
         new_tournament = Tournament.create(name=validated_data['name'],
@@ -156,7 +156,8 @@ class TournamentSerializer(serializers.ModelSerializer):
                                            #account=self.context['request'].user,
                                            account=28,
                                            format=validated_data['format'],
-                                           background=validated_data['background'])
+                                           background=validated_data['background'],
+                                           region=validated_data['region'])
         return new_tournament
 
 

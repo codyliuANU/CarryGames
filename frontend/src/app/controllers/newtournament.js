@@ -10,7 +10,8 @@ app.controller('NewTournamentFormController', ['$scope', 'tournaments', '$state'
         'rules': '',
         'date': '',
         'time': '',
-        'fare': '0'
+        'fare': '0',
+        'region': ''
     };
 
     $scope.alerts = [];
@@ -88,7 +89,7 @@ app.controller('NewTournamentFormController', ['$scope', 'tournaments', '$state'
          var t = $scope.tournament.date;
          $scope.tournament.date = t.getFullYear() + "-" + (t.getMonth() + 1) +"-" +t.getDate();
 
-        if($scope.uploader.length >= 0) {
+        if($scope.uploader.queue.length >= 0) {
             console.log("uploadItem");
             $scope.uploader.uploadItem(0);
         }
