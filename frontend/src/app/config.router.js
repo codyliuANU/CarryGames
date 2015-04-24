@@ -18,7 +18,7 @@ angular.module('app')
       function ($stateProvider,   $urlRouterProvider) {
           
           $urlRouterProvider
-              .otherwise('/app/tournaments/all');
+              .otherwise('/app/tournaments/');
           $stateProvider
               .state('app', {
                   abstract: true,
@@ -30,8 +30,12 @@ angular.module('app')
                   template: '<div ui-view class="fade-in-up"></div>'
               })
               .state('app.tournaments.all', {
-                  url: '/all',
+                  url: '/',
                   templateUrl: 'tpl/tournaments.html'
+              })
+              .state('app.tournaments.id', {
+                  url: '/{tournament_id}',
+                  templateUrl: 'tpl/page_tournament.html'
               })
               .state('app.tournaments.new', {
                   url: '/new',
