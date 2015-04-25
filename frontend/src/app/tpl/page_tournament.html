@@ -1,89 +1,165 @@
-<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="ProfileController">
-  <div class="col">
-    <div style="background-image: url(/media/tournaments_background/YROfMAz.jpg)" class="back-image">
-      <div class="wrapper-lg bg-white-opacity">
-        <div class="row m-t">
-          <div class="col-sm-7">
-            <a href class="thumb-lg pull-left m-r">
-              <img src="static/assets/img/a0.jpg" class="img-circle">
-            </a>
-            <div class="clear m-b">
-              <div class="m-b m-t-sm">
-                <span class="h3 text-black">{{ account.battle_tag }}</span>
-                <small class="m-l">{{ account.email }}</small>
-              </div>
-              <p class="m-b">
-                <a href class="btn btn-sm btn-bg btn-rounded btn-default btn-icon"><i class="fa fa-twitter"></i></a>
-                <a href class="btn btn-sm btn-bg btn-rounded btn-default btn-icon"><i class="fa fa-facebook"></i></a>
-                <a href class="btn btn-sm btn-bg btn-rounded btn-default btn-icon"><i class="fa fa-google-plus"></i></a>
-              </p>
-              <a href class="btn btn-sm btn-success btn-rounded">Follow</a>
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="PageTournamentController" xmlns="http://www.w3.org/2000/svg">
+    <div class="col">
+        <div ng-style="{'background-image': 'url('+ tournamentData.background +')'}" class="back-image">
+            <div class="wrapper-lg bg-white-opacity">
+                <div class="row m-t text-white">
+                    <div class="col-sm-7">
+                        <div class="clear m-b">
+                            <div class="m-b m-t-sm">
+                                <span class="h1">{{ tournamentData.name }}</span>
+                            </div>
+                            <p class="m-b">
+                                <span class=h3">Статус: регистрация участников</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="pull-right pull-none-xs text-center">
+                            <div>
+                                <a href class="m-b-md inline m">
+                                    <span class="h3 block font-bold">2k</span>
+                                    <small>Followers</small>
+                                </a>
+                                <a href class="m-b-md inline m">
+                                    <span class="h3 block font-bold">250</span>
+                                    <small>Following</small>
+                                </a>
+                            </div>
+                            <a href class="btn btn-lg btn-success btn-rounded">Участвовать</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-sm-5">
-            <div class="pull-right pull-none-xs text-center">
-              <a href class="m-b-md inline m">
-                <span class="h3 block font-bold">2k</span>
-                <small>Followers</small>
-              </a>
-              <a href class="m-b-md inline m">
-                <span class="h3 block font-bold">250</span>
-                <small>Following</small>
-              </a>
+        </div>
+        <div>
+            <tabset justified="true" class="tab-container">
+                <tab heading="Информация">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <pre class="alert alert-success text-left"><strong>Регистрация на данный турнир открыта. Вы можете присоединиться, если желаете!<br>До начала турнира: </strong>{{ diff }}</pre>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Правила и условия</div>
+                                <div class="panel-body">
+                                  <p>{{ tournamentData.rules }}</p>
+                                </div>
+                            </div>
+                            <svg width="640" height="100" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+                             <g>
+                              <polyline points="23.949217158487922,49.99999869622762 320.21095077913344,49.99999869622762 616.4726843997789,49.99999869622762" stroke="#000000" stroke-width="3" fill="none" id="svg_3" stroke-linecap="square"></polyline>
+                              <line fill="none" stroke="#27c24c" stroke-width="3" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="square" x1="259.14399" y1="39.13521" x2="259.14399" y2="60.86479" id="svg_35"></line>
+                              <polyline points="28.400264739990234,50.131690979003906 143.27110984645833,50.131690979003906 258.1419687369903,50.131690979003906 " stroke-width="3" fill="none" stroke-linecap="square" id="svg_26" stroke="#27c24c"></polyline>
+                              <circle fill="#00007f" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" cx="25.50783" cy="50" r="5" id="svg_8" stroke="#000000"></circle>
+                              <circle fill="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" cx="499.5962" cy="49.99999" r="7.46178" id="svg_15" stroke="#000000"></circle>
+                              <path fill="#ff0000" stroke-width="3" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="square" opacity="0.13" d="m301.09235,42.31782l197.72272,0l0,15.36436l-197.72272,0l0,-15.36436z" id="svg_29" stroke="#ff0000"></path>
+                              <path fill="#27c24c" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m499.95352,40.34241c-5.3335,0 -9.65689,4.32389 -9.65689,9.65765c0,5.33412 4.32339,9.65754 9.65689,9.65754c5.33249,0 9.65588,-4.32342 9.65588,-9.65754c0,-5.33376 -4.32339,-9.65765 -9.65588,-9.65765zm-1.5499,16.11983l-2.35153,-2.35127l4.11191,-4.1114l-4.11191,-4.11104l2.35153,-2.34976l6.46143,6.4608l-6.46143,6.46267z" id="svg_13"></path>
+                              <circle fill="#ff0000" stroke="#ff0000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" cx="300.34428" cy="50" r="5" id="svg_21"></circle>
+                              <circle fill="#ff0000" stroke="#ff0000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" cx="470.7331" cy="50" r="5" id="svg_24"></circle>
+                              <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="bevel" stroke-linecap="round" x="90" y="70" id="svg_37" font-size="16" font-family="Sans-serif" text-anchor="middle" xml:space="preserve">Турнир был создан</text>
+                              <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="bevel" stroke-linecap="round" x="389.93744" y="70" id="svg_1" font-size="16" font-family="Sans-serif" text-anchor="middle" xml:space="preserve">Подтверждение регистрации</text>
+                              <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="bevel" stroke-linecap="round" x="392.18744" y="25" id="svg_2" font-size="16" font-family="Sans-serif" text-anchor="middle" xml:space="preserve">Закрытие регистрации</text>
+                              <text font-weight="normal" xml:space="preserve" text-anchor="middle" font-family="Sans-serif" font-size="16" id="svg_4" y="44" x="564.87494" stroke-linecap="square" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#00ff00" fill="#000000">Старт турнира</text>
+                              <text font-weight="normal" xml:space="preserve" text-anchor="middle" font-family="Sans-serif" font-size="14" id="svg_6" y="85" x="66.49994" stroke-linecap="square" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#3f3f3f">20.09 в 21:30</text>
+                              <text font-weight="normal" xml:space="preserve" text-anchor="middle" font-family="Sans-serif" font-size="14" y="85" x="328.07025" stroke-linecap="square" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#3f3f3f" id="svg_5">20.09 в 21:30</text>
+                              <text font-weight="normal" xml:space="preserve" text-anchor="middle" font-family="Sans-serif" font-size="14" y="39.4375" x="431.56245" stroke-linecap="square" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#3f3f3f" id="svg_7">20.09 в 21:30</text>
+                              <text font-weight="normal" xml:space="preserve" text-anchor="middle" font-family="Sans-serif" font-size="14" y="64" x="556.99994" stroke-linecap="square" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#3f3f3f" id="svg_9">{{ start }}</text>
+                             </g>
+                            </svg>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-5 panel panel-default m-l-sm">
+                                    <div class="panel-body text-center" style="height: 150px;">
+                                        <h4><b>4/12</b></h4><br><i class="icon-users block m-b-xs fa-2x"></i>Участников
+                                    </div>
+                                </div>
+                                <div class="col-md-5 col-md-offset-1 panel panel-default">
+                                    <div class="panel-body text-center" style="height: 150px;">
+                                        <h4 class="text-success-dk">Бесплатно</h4><br><i class="fa block m-b-xs fa-2x fa-ruble"></i>Взнос
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-striped m-b-none">
+                              <thead>
+                                <tr>
+                                  <th>Позиция</th>
+                                  <th style="width:70px;">Награда</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>Первое место</td>
+                                  <td class="text-right">
+                                    500 <i class="fa fa-ruble"></i>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>Второе место</td>
+                                  <td class="text-right">
+                                    200 <i class="fa fa-ruble"></i>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>Все остальные</td>
+                                  <td class="text-right">
+                                    0 <i class="fa fa-ruble"></i>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <a href class="btn btn-lg btn-success btn-rounded pull-right m-r-md">Участвовать</a>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="Участники">Этот раздел находится в разработке</tab>
+                <tab heading="Сетка">Этот раздел находится в разработке</tab>
+                <tab heading="Трансляции">Этот раздел находится в разработке</tab>
+            </tabset>
+        </div>
+    </div>
+    <div class="col w-lg bg-light lter b-l bg-auto">
+        <div class="wrapper">
+            <div class="panel b-light clearfix">
+                <div class="panel-body">
+                    <a href class="thumb pull-left m-r">
+                        <img src="static/assets/img/a0.jpg" class="img-circle">
+                    </a>
+
+                    <div class="clear">
+                        Менеджер турнира:<br>
+                        <a href class="text-info">Aleksey Lanbin</a>
+                        <small class="block text-muted">Skype: bet_copy</small>
+                        <a href class="btn btn-info m-t-xs">Связаться</a>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-        <tabset justified="true" class="tab-container">
-            <tab heading="Информация">Этот раздел находится в разработке</tab>
-            <tab heading="Участники">Этот раздел находится в разработке</tab>
-            <tab heading="Сетка">Этот раздел находится в разработке</tab>
-            <tab heading="Трансляции">Этот раздел находится в разработке</tab>
-        </tabset>
-    </div>
-  </div>
-  <div class="col w-lg bg-light lter b-l bg-auto">
-    <div class="wrapper">
-        <div class="panel b-light clearfix">
-        <div class="panel-body">
-          <a href class="thumb pull-left m-r">
-            <img src="static/assets/img/a0.jpg" class="img-circle">
-          </a>
-          <div class="clear">
-              Менеджер турнира:<br>
-            <a href class="text-info">Aleksey Lanbin</a>
-            <small class="block text-muted">Skype: bet_copy</small>
-            <a href class="btn btn-info m-t-xs">Связаться</a>
-          </div>
-        </div>
-      </div>
-      <div class="panel b-a">
-        <h4 class="font-thin padder">Чат</h4>
-        <ul class="list-group">
-          <li class="list-group-item">
-              <p>Wellcome <a href class="text-info">@Drew Wllon</a> and play this web application template, have fun1 </p>
-              <small class="block text-muted"><i class="fa fa-fw fa-clock-o"></i> 2 minuts ago</small>
-          </li>
-          <li class="list-group-item">
-              <p>Morbi nec <a href class="text-info">@Jonathan George</a> nunc condimentum ipsum dolor sit amet, consectetur</p>
-              <small class="block text-muted"><i class="fa fa-fw fa-clock-o"></i> 1 hour ago</small>
-          </li>
-          <li class="list-group-item">
-              <p><a href class="text-info">@Josh Long</a> Vestibulum ullamcorper sodales nisi nec adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis</p>
-              <small class="block text-muted"><i class="fa fa-fw fa-clock-o"></i> 2 hours ago</small>
-          </li>
-            <li class="list-group-item">
-                <div class="input-group">
-              <input type="text" class="form-control">
+            <div class="panel b-a">
+                <h4 class="font-thin padder">Чат</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <p>Wellcome <a href class="text-info">@Drew Wllon</a> and play this web application template,
+                            have fun1 </p>
+                        <small class="block text-muted"><i class="fa fa-fw fa-clock-o"></i> 2 minuts ago</small>
+                    </li>
+                    <li class="list-group-item">
+                        <p>Morbi nec <a href class="text-info">@Jonathan George</a> nunc condimentum ipsum dolor sit
+                            amet, consectetur</p>
+                        <small class="block text-muted"><i class="fa fa-fw fa-clock-o"></i> 1 hour ago</small>
+                    </li>
+                    <li class="list-group-item">
+                        <p><a href class="text-info">@Josh Long</a> Vestibulum ullamcorper sodales nisi nec adipiscing
+                            elit. Morbi id neque quam. Aliquam sollicitudin venenatis</p>
+                        <small class="block text-muted"><i class="fa fa-fw fa-clock-o"></i> 2 hours ago</small>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="input-group">
+                            <input type="text" class="form-control">
                     <span class="input-group-btn">
                     <button class="btn btn-default" type="button">Отправить</button>
                     </span>
-                </div>
-            </li>
-        </ul>
-      </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

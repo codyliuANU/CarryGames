@@ -9,6 +9,11 @@ angular.module('djangoTournamentModule', ['djangoRESTResources'])
             query: { method:'GET', params:{}, isArray:true }
         });
     }])
+    .factory('tournamentById', ['djResource', function (djResource) {
+        return djResource('/api-v1/tournaments/:id/', {id: '@id'}, {
+            query: { method:'GET', params:{} }
+        });
+    }])
     .factory('tournaments', ['djResource', function (djResource) {
         return djResource('/api-v1/tournaments/', {}, {
             query: { method:'GET', params:{}, isArray:true },
