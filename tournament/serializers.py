@@ -127,12 +127,22 @@ class TournamentDataSerializer(serializers.ModelSerializer):
 
 class AttendantSerializer(serializers.ModelSerializer):
     name = serializers.ReadOnlyField(source='account.battle_tag')
-    id = ToTextField(source='account.id')
+    id = ToTextField(source='account.id', read_only=True)
     flag = serializers.ReadOnlyField(source='gameClass')
+
+    tournament_id = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = Attendant
-        fields = ('name', 'id', 'flag')
+        fields = ('name', 'id', 'flag', 'tournament_id')
+        read_only_fields = ('id', 'name', 'account')
+
+    def create(self, validated_data):
+        flag = "rus.png"  # TODO: hardcoded value, need to decide how to use the variable
+        tournament = Tournament.objects.get(id=validated_data['tournament_id'])
+        new_attendant = Attendant(account=self.context['request'].user, tournament=tournament, gameClass=flag)
+        new_attendant.save()
+        return new_attendant
 
 
 class TournamentSerializer(serializers.ModelSerializer):
@@ -153,8 +163,8 @@ class TournamentSerializer(serializers.ModelSerializer):
                                            date=validated_data['date'],
                                            time=validated_data['time'],
                                            fare=validated_data['fare'],
-                                           #account=self.context['request'].user,
-                                           account=28,
+                                           account=self.context['request'].user,
+                                           # account=28,
                                            format=validated_data['format'],
                                            background=validated_data['background'],
                                            region=validated_data['region'])

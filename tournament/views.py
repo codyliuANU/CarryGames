@@ -14,9 +14,11 @@ class MatchViewSet(viewsets.GenericViewSet):
         return Response(serializer.data)
 
 
-class AttendantViewSet(viewsets.GenericViewSet):
+class AttendantViewSet(viewsets.ModelViewSet):
 
     queryset = Attendant.objects.all()
+    serializer_class = AttendantSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def retrieve(self, request, pk=None):
         queryset = Attendant.objects.filter(tournament=pk)

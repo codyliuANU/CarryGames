@@ -1,15 +1,11 @@
 /* Controllers */
 // tournaments (main page) controller
-app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateParams', '$q', '$interval',
-    function ($scope, tournamentById, $stateParams, $q, $interval) {
+app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateParams', '$q', '$interval', 'attendants', 'attendantsByTournamentId',
+    'djangoAuth',
+    function ($scope, tournamentById, $stateParams, $q, $interval, attendants, attendantsByTournamentId, djangoAuth) {
 
-
-        $scope.start = '';
-        $scope.created_at = '';
-        $scope.close_at = '';
-        $scope.register_at = '';
-        $scope.now_position = 0;
-
+        var dateToStart = null;
+        $scope.isAlreadyAttendant = false;
 
         function formatDate(d){
             var day = d.getDate();
@@ -31,14 +27,19 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
             return hours + ":" + minutes;
         }
 
+        //d1 - datetostart d2 - now
         function calcDiff(d1, d2) {
-            var diff=d2-d1,sign=diff<0?-1:1,milliseconds,seconds,minutes,hours,days;
-            diff/=sign; // or diff=Math.abs(diff);
-            diff=(diff-(milliseconds=diff%1000))/1000;
-            diff=(diff-(seconds=diff%60))/60;
-            diff=(diff-(minutes=diff%60))/60;
-            days=(diff-(hours=diff%24))/24;
-            return days + " дней, " + hours + " часов, " + minutes + " минут, " + seconds + " секунд."
+            if(d1 > d2){
+                var diff=d2-d1,sign=diff<0?-1:1,milliseconds,seconds,minutes,hours,days;
+                diff/=sign; // or diff=Math.abs(diff);
+                diff=(diff-(milliseconds=diff%1000))/1000;
+                diff=(diff-(seconds=diff%60))/60;
+                diff=(diff-(minutes=diff%60))/60;
+                days=(diff-(hours=diff%24))/24;
+                return days + " дней, " + hours + " часов, " + minutes + " минут, " + seconds + " секунд."
+            } else {
+                return "турнир уже начался.";
+            }
         }
 
         function calcPositionOnGraph(created, start, value){
@@ -54,7 +55,7 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
 
         function calcDatesForGraph(data){
             //start date
-            var dateToStart = new Date(data.date);
+            dateToStart = new Date(data.date);
             dateToStart.setHours(Number(data.time.substring(0,2)));
             dateToStart.setMinutes(Number(data.time.substring(3,5)));
             $scope.start = formatDate(dateToStart) + " в " + data.time.substring(0, 5);
@@ -83,6 +84,7 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
 
         var tournament_id = $stateParams['tournament_id'];
 
+        //// REST requests ////
         function doQuery() {
             var d = $q.defer();
             var result = tournamentById.query({id:tournament_id}, function() {
@@ -93,7 +95,6 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
 
         var promise = doQuery();
 
-        var dateToStart = null;
         promise.then(function(data) {
             console.log("Success");
             console.log(data);
@@ -102,6 +103,30 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
             $scope.tournamentData = data;
             calcDatesForGraph(data);
         });
+
+        attendantsByTournamentId.query({id:tournament_id}, function(data) {
+            console.log("Success");
+            console.log(data);
+            $scope.attendantsData = data;
+
+
+            djangoAuth.profile().then(function (data) {
+                console.log("SUCCEED GET USER PROFILE");
+                console.log(data);
+
+                for(var j = 0; j < $scope.attendantsData.length; j++){
+                    if($scope.attendantsData[j].id == data.id){
+                        $scope.isAlreadyAttendant = true;
+                        break;
+                    }
+                }
+            });
+        }, function(data) {
+            console.log("Failed");
+            console.log(data);
+        });
+
+        //// END REST requests ////
 
 
         timer = $interval(function() {
@@ -119,6 +144,20 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
             timer = undefined;
           }
         });
+
+        $scope.addAttendant = function () {
+            var request = {
+              "tournament_id": $stateParams['tournament_id']
+            };
+            attendants.save(request, function(data) {
+                console.log("SUCCESS");
+                console.log(data);
+            }, function (data) {
+                console.log("FAILED");
+                console.log(data);
+            })
+        };
+
         /*var ts = tournaments.query(function(data) {
             // Transform object into array
             var data_array =[];

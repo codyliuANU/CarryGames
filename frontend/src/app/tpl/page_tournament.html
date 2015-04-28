@@ -25,7 +25,7 @@
                                     <small>Following</small>
                                 </a>
                             </div>
-                            <a href class="btn btn-lg btn-success btn-rounded">Участвовать</a>
+                            <a  ng-if="!isAlreadyAttendant" href class="btn btn-lg btn-success btn-rounded" ng-click="addAttendant()">Участвовать</a>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,8 @@
                 <tab heading="Информация">
                     <div class="row">
                         <div class="col-md-8">
-                            <pre class="alert alert-success text-left"><strong>Регистрация на данный турнир открыта. Вы можете присоединиться, если желаете!<br>До начала турнира: </strong>{{ diff }}</pre>
+                            <pre ng-if="isAlreadyAttendant" class="alert alert-info text-left"><strong>Вы уже зарегестрированы на данный турнир!<br>До начала турнира: </strong>{{ diff }}</pre>
+                            <pre ng-if="!isAlreadyAttendant" class="alert alert-success text-left"><strong>Регистрация на данный турнир открыта. Вы можете присоединиться, если желаете!<br>До начала турнира: </strong>{{ diff }}</pre>
                             <div class="panel panel-default">
                                 <div class="panel-heading">Правила и условия</div>
                                 <div class="panel-body">
@@ -69,7 +70,7 @@
                             <div class="row">
                                 <div class="col-md-5 panel panel-default m-l-sm">
                                     <div class="panel-body text-center" style="height: 150px;">
-                                        <h4><b>4/12</b></h4><br><i class="icon-users block m-b-xs fa-2x"></i>Участников
+                                        <h4><b>{{ attendantsData.length }}/{{ tournamentData.maxplayers }}</b></h4><br><i class="icon-users block m-b-xs fa-2x"></i>Участников
                                     </div>
                                 </div>
                                 <div class="col-md-5 col-md-offset-1 panel panel-default">
@@ -106,7 +107,7 @@
                                 </tr>
                               </tbody>
                             </table>
-                            <a href class="btn btn-lg btn-success btn-rounded pull-right m-r-md">Участвовать</a>
+                            <a href ng-if="!isAlreadyAttendant" class="btn btn-lg btn-success btn-rounded pull-right m-r-md" ng-click="addAttendant()">Участвовать</a>
                         </div>
                     </div>
                 </tab>
