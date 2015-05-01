@@ -31,8 +31,8 @@ class TournamentDataViewSet(viewsets.GenericViewSet):
     queryset = TournamentData.objects.all()
 
     def retrieve(self, request, pk=None):
-        queryset = TournamentData.objects.get(tournament=pk)
-        return Response(TournamentDataSerializer(queryset).data)
+        t_data = Tournament.objects.get(id=pk).t_data
+        return Response(TournamentDataSerializer(t_data).data)
 
 
 class TournamentViewSet(viewsets.ModelViewSet):

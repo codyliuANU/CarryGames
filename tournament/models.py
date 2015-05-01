@@ -2,6 +2,18 @@ from django.db import models
 from authentication.models import Account
 
 
+class Properties(models.Model):
+    status = models.CharField(max_length=20)
+    unbalanced = models.CharField(max_length=10, null=True)
+
+
+class TournamentData(models.Model):
+    type = models.CharField(max_length=10)
+    properties = models.OneToOneField(Properties)
+    # tournament = models.ForeignKey(Tournament)
+    # matches: [] (Match)
+
+
 # Base tournament description
 class Tournament(models.Model):
     name = models.CharField(max_length=80)
@@ -17,10 +29,15 @@ class Tournament(models.Model):
     background = models.ImageField(upload_to='tournaments_background/', null=True)
     region = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
+    t_data = models.OneToOneField(TournamentData)
 
     @classmethod
     def create(cls, allmatches='Bo3', semi='Bo3', finals='Bo5', fare=0, **kwargs):
         ac = Account.objects.get(id=kwargs['account'])
+        props = Properties(status="Not started")
+        props.save()
+        tournament_data = TournamentData(type=kwargs['format'], properties=props)
+        tournament_data.save()
         tour = cls(name=kwargs['name'],
                    allmatches=allmatches,
                    semi=semi,
@@ -30,23 +47,20 @@ class Tournament(models.Model):
                    date=kwargs['date'],
                    time=kwargs['time'],
                    fare=fare,
-                   #account=kwargs['account']
+                   # account=kwargs['account']
                    account=ac,
                    background=kwargs['background'],
-                   region=kwargs['region']
-        )
+                   region=kwargs['region'],
+                   t_data=tournament_data
+                   )
         tour.save()
-        props = Properties(status="Not started")
-        props.save()
-        tournament_data = TournamentData(type=kwargs['format'], properties=props, tournament=tour)
-        tournament_data.save()
         conference = Conference(tournamentData=tournament_data)
         conference.save()
         return tour
 
     @staticmethod
     def create_match(round_number, match_number, conference):
-        meta = Meta(matchId="match-"+conference+'-'+str(round_number)+'-'+str(match_number))
+        meta = Meta(matchId="match-" + conference + '-' + str(round_number) + '-' + str(match_number))
         meta.save()
         contestant1 = Contestant()
         contestant1.save()
@@ -58,7 +72,8 @@ class Tournament(models.Model):
     def get_even_distribution(round_len, number_of_attendants, promoted_round):
         dist = []
         x = (2 * round_len) - number_of_attendants if promoted_round else number_of_attendants
-        step = round_len / (abs((2 * round_len) - number_of_attendants)) if promoted_round else round_len / number_of_attendants
+        step = round_len / (
+            abs((2 * round_len) - number_of_attendants)) if promoted_round else round_len / number_of_attendants
 
         for i in range(0, round_len):
             dist.append(2 if promoted_round else 0)
@@ -92,13 +107,16 @@ class Tournament(models.Model):
 
             if excess_participants > 0:
                 shifted_matches = excess_participants - (closest_balance_tree / 2)
-                start_index = closest_balance_tree if shifted_matches == 0 else (closest_balance_tree + (shifted_matches * 2) if shifted_matches > 0 else closest_balance_tree - (abs(shifted_matches) * 2))
+                start_index = closest_balance_tree if shifted_matches == 0 else (
+                    closest_balance_tree + (shifted_matches * 2) if shifted_matches > 0 else closest_balance_tree - (
+                        abs(shifted_matches) * 2))
                 balancing_round = attendants[start_index:]
                 del attendants[start_index:]
 
         # Loop through teams / previous round matches and create following match
         for index, attendant in enumerate(attendants):
-            match = self.create_match(round_number=round_number, match_number=new_round.matches.all().__len__() + 1, conference=conference)
+            match = self.create_match(round_number=round_number, match_number=new_round.matches.all().__len__() + 1,
+                                      conference=conference)
 
             if round_number == 1:
                 # normal brackets untill reaching biggest possible balanced tree...
@@ -112,7 +130,7 @@ class Tournament(models.Model):
                 # c2 = Contestant(account=attendants[index+1].account)
                 # c2.save()
                 # match.contestant2_id = c2.id
-                match.contestant2.account = attendants[index+1].account
+                match.contestant2.account = attendants[index + 1].account
                 match.contestant2.save()
 
             elif index % 2 != 0:
@@ -131,7 +149,8 @@ class Tournament(models.Model):
             # Round 1 and Round 2 are equally long --> have to balance every match.
             if shifted_matches == 0:
                 for bal_round in balancing_round:
-                    match = self.create_match(round_number=round_number + 1, match_number=round_b.matches.all().__len__() + 1, conference=conference)
+                    match = self.create_match(round_number=round_number + 1,
+                                              match_number=round_b.matches.all().__len__() + 1, conference=conference)
                     # c1 = Contestant(account=bal_round.account)
                     # c1.save()
                     # match.contestant1_id = c1.id
@@ -145,7 +164,8 @@ class Tournament(models.Model):
                 dist = self.get_even_distribution(closest_balance_tree / 2, balancing_round.__len__(), False)
                 p = 0
                 for i in range(0, dist.__len__()):
-                    match = self.create_match(round_number=round_number + 1, match_number=round_b.matches.all().__len__() + 1, conference=conference)
+                    match = self.create_match(round_number=round_number + 1,
+                                              match_number=round_b.matches.all().__len__() + 1, conference=conference)
                     if dist[i] == 1:
                         # c1 = Contestant(account=balancing_round[p].account)
                         # c1.save()
@@ -161,7 +181,8 @@ class Tournament(models.Model):
                 dist = self.get_even_distribution(closest_balance_tree / 2, balancing_round.__len__(), True)
                 j = 0
                 for i in range(0, closest_balance_tree / 2):
-                    match = self.create_match(round_number=round_number + 1, match_number=round_b.matches.all().__len__() + 1, conference=conference)
+                    match = self.create_match(round_number=round_number + 1,
+                                              match_number=round_b.matches.all().__len__() + 1, conference=conference)
                     # c1 = Contestant(account=balancing_round[j].account)
                     # c1.save()
                     # match.contestant1_id = c1.id
@@ -174,7 +195,7 @@ class Tournament(models.Model):
                         # c2 = Contestant(account=balancing_round[j+1].account)
                         # c2.save()
                         # match.contestant2_id = c2.id
-                        match.contestant2.account = balancing_round[j+1].account
+                        match.contestant2.account = balancing_round[j + 1].account
                         match.contestant2.save()
                         match.meta.matchType = '2'
                         match.meta.save()
@@ -215,7 +236,8 @@ class Tournament(models.Model):
         meta.save()
 
         if play_bronze_match:
-            bronze_match = self.create_match(rounds.__len__(), rounds[rounds.__len__() - 1].matches.all().__len__() + 1, conference)
+            bronze_match = self.create_match(rounds.__len__(), rounds[rounds.__len__() - 1].matches.all().__len__() + 1,
+                conference)
             bronze_match.meta.matchType = 'bronze'
             bronze_match.meta.save()
 
@@ -231,19 +253,6 @@ class Tournament(models.Model):
         self.create_tournament(attendants=attendants, play_bronze_match=play_bronze_match, conference="C1")
 
 
-
-class Properties(models.Model):
-    status = models.CharField(max_length=20)
-    unbalanced = models.CharField(max_length=10, null=True)
-
-
-class TournamentData(models.Model):
-    type = models.CharField(max_length=10)
-    properties = models.OneToOneField(Properties)
-    tournament = models.ForeignKey(Tournament)
-    # matches: [] (Match)
-
-
 class Conference(models.Model):
     tournamentData = models.ForeignKey(TournamentData, related_name='conferences')
 
@@ -252,6 +261,8 @@ class Attendant(models.Model):
     account = models.ForeignKey(Account)
     gameClass = models.CharField(max_length=30)
     tournament = models.ForeignKey(Tournament)
+
+
 ############################################
 
 

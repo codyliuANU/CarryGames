@@ -152,6 +152,7 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
             attendants.save(request, function(data) {
                 console.log("SUCCESS");
                 console.log(data);
+                $scope.isAlreadyAttendant = true;
             }, function (data) {
                 console.log("FAILED");
                 console.log(data);
