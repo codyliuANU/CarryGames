@@ -255,10 +255,10 @@ app
             //$scope.teamsJson = '[[{"name":"battle_tag1","id":30,"flag":"58px-Anduin_64.png"},{"name":"battle_tag2","id":31,"flag":"58px-Anduin_64.png"},{"name":"battle_tag3","id":32,"flag":"58px-Anduin_64.png"},{"name":"battle_tag4","id":33,"flag":"58px-Anduin_64.png"},{"name":"battle_tag5","id":34,"flag":"58px-Anduin_64.png"},{"name":"battle_tag6","id":35,"flag":"58px-Anduin_64.png"}]]';
 
             $scope.teamsJson = '[[{"name":"Player 1","id":"1","flag":"aut.png","members":[]},{"name":"Player 2","id":"2","flag":"den.png","members":[]},{"name":"Player 3","id":"3","flag":"ger.png","members":[]},{"name":"Player 4","id":"4","flag":"usa.png","members":[]},{"name":"Player 5","id":"5","flag":"swe.png","members":[]},{"name":"Player 6","id":"6","flag":"fra.png","members":[]},{"name":"Player 7","id":"7","flag":"fin.png","members":[]},{"name":"Player 8","id":"8","flag":"est.png","members":[]},{"name":"Player 9","id":"9","flag":"aut.png","members":[]},{"name":"Player 10","id":"10","flag":"uk.png","members":[]},{"name":"Player 11","id":"11","flag":"chi.png","members":[]},{"name":"Player 12","id":"12","flag":"usa.png","members":[]},{"name":"Player 13","id":"13","flag":"can.png","members":[]},{"name":"Player 14","id":"14","flag":"usa.png","members":[]},{"name":"Player 15","id":"15","flag":"swe.png","members":[]},{"name":"Player 16","id":"16","flag":"cze.png","members":[]},{"name":"Player 17","id":"17","flag":"rus.png","members":[]},{"name":"Player 18","id":"18","flag":"ger.png","members":[]},{"name":"Player 19","id":"19","flag":"fin.png","members":[]},{"name":"Player 20","id":"20","flag":"den.png","members":[]},{"name":"Player 21","id":"21","flag":"ger.png","members":[]},{"name":"Player 22","id":"22","flag":"sui.png","members":[]}]]';
-            /* var attendants = tournamentAttendantsById.query({id:28}, function() {
+             var attendants = tournamentAttendantsById.query({id:52}, function() {
                  attendants = "[" + JSON.stringify(attendants) + "]";
              });
-             var tournamentData = tournamentDataById.query({id:28}, function() {
+             var tournamentData = tournamentDataById.query({id:52}, function() {
                  startTournament(tournamentData, JSON.parse(attendants));
              });
 
@@ -267,5 +267,5 @@ app
                  $scope.td = tournamentData;
 
              console.log(attendants);
-             console.log(tournamentData);*/
+             console.log(tournamentData);
   }]);

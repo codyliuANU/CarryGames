@@ -151,7 +151,7 @@ class TournamentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tournament
-        read_only_fields = ('account', 'created_at')
+        read_only_fields = ('account', 'created_at', 't_data')
 
     def create(self, validated_data):
         new_tournament = Tournament.create(name=validated_data['name'],

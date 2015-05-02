@@ -89,7 +89,7 @@ app.controller('NewTournamentFormController', ['$scope', 'tournaments', '$state'
          var t = $scope.tournament.date;
          $scope.tournament.date = t.getFullYear() + "-" + (t.getMonth() + 1) +"-" +t.getDate();
 
-        if($scope.uploader.queue.length >= 0) {
+        if($scope.uploader.queue.length > 0) {
             console.log("uploadItem");
             $scope.uploader.uploadItem(0);
         }

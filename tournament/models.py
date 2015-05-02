@@ -33,7 +33,6 @@ class Tournament(models.Model):
 
     @classmethod
     def create(cls, allmatches='Bo3', semi='Bo3', finals='Bo5', fare=0, **kwargs):
-        ac = Account.objects.get(id=kwargs['account'])
         props = Properties(status="Not started")
         props.save()
         tournament_data = TournamentData(type=kwargs['format'], properties=props)
@@ -47,8 +46,7 @@ class Tournament(models.Model):
                    date=kwargs['date'],
                    time=kwargs['time'],
                    fare=fare,
-                   # account=kwargs['account']
-                   account=ac,
+                   account=kwargs['account'],
                    background=kwargs['background'],
                    region=kwargs['region'],
                    t_data=tournament_data
@@ -75,10 +73,10 @@ class Tournament(models.Model):
         step = round_len / (
             abs((2 * round_len) - number_of_attendants)) if promoted_round else round_len / number_of_attendants
 
-        for i in range(0, round_len):
+        for i in range(0, int(round_len)):
             dist.append(2 if promoted_round else 0)
 
-        for i in range(0, x):
+        for i in range(0, int(x)):
             ind = round(i * step)
             dist[ind] = dist[ind] - 1 if promoted_round else dist[ind] + 1
 
@@ -108,8 +106,8 @@ class Tournament(models.Model):
             if excess_participants > 0:
                 shifted_matches = excess_participants - (closest_balance_tree / 2)
                 start_index = closest_balance_tree if shifted_matches == 0 else (
-                    closest_balance_tree + (shifted_matches * 2) if shifted_matches > 0 else closest_balance_tree - (
-                        abs(shifted_matches) * 2))
+                    int(closest_balance_tree + (shifted_matches * 2) if shifted_matches > 0 else closest_balance_tree - (
+                        abs(shifted_matches) * 2)))
                 balancing_round = attendants[start_index:]
                 del attendants[start_index:]
 
@@ -141,10 +139,10 @@ class Tournament(models.Model):
 
         dist = None
         if round_number == 1 and balancing_round is not None and balancing_round.__len__() > 0:
-            self.tournamentdata_set.last().conferences.last().rounds.add(new_round)
+            self.t_data.conferences.last().rounds.add(new_round)
 
-            self.tournamentdata_set.last().properties.unbalanced = True
-            self.tournamentdata_set.last().properties.save()
+            self.t_data.properties.unbalanced = True
+            self.t_data.properties.save()
             round_b = Round()
             # Round 1 and Round 2 are equally long --> have to balance every match.
             if shifted_matches == 0:
@@ -223,14 +221,14 @@ class Tournament(models.Model):
                 partic = attendants.copy()
 
             previous_round = self.generate_round(attendants=partic, round_number=round_number, conference=conference)
-            td_conference = self.tournamentdata_set.last().conferences.last()
+            td_conference = self.t_data.conferences.last()
 
             td_conference.save()
             td_conference.rounds.add(previous_round)
 
             round_number = td_conference.rounds.all().__len__() + 1
 
-        rounds = list(self.tournamentdata_set.last().conferences.last().rounds.all())
+        rounds = list(self.t_data.conferences.last().rounds.all())
         meta = rounds[rounds.__len__() - 1].matches.last().meta
         meta.matchType = 'finals'
         meta.save()
@@ -248,9 +246,10 @@ class Tournament(models.Model):
         attendants = list(self.attendant_set.all())
 
         if attendants.__len__() < 3:
-            return
+            return "Not enough attendants to start the tournament"
 
         self.create_tournament(attendants=attendants, play_bronze_match=play_bronze_match, conference="C1")
+        return "Tournament was created"
 
 
 class Conference(models.Model):
