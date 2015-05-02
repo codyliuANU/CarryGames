@@ -6,6 +6,8 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
 
         var dateToStart = null;
         $scope.isAlreadyAttendant = false;
+        $scope.isNotStated = false;
+        $scope.isCanceled = false;
 
         function formatDate(d) {
             var day = d.getDate();
@@ -175,25 +177,34 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
             }
         };
 
-        function startTournament(tournamentData, teams) {
+        function startTournament(td, teams) {
             $scope.bracketData.teams = teams;
-            $scope.bracketData.tournament = tournamentData;
-            $scope.bracketData.reload();
+            $scope.bracketData.tournament = td;
+            if(!$scope.isNotStated && !$scope.isCanceled)
+                $scope.bracketData.reload();
         }
 
-        var attendants = tournamentAttendantsById.query({id: $stateParams['tournament_id']}, function () {
-            attendants = "[" + JSON.stringify(attendants) + "]";
+        var td = null;
+        var participants;
+        participants = tournamentAttendantsById.query({id: $stateParams['tournament_id']}, function () {
+            participants = "[" + JSON.stringify(participants) + "]";
+            $scope.at = participants;
+            console.log(attendants);
+
+            td = tournamentDataById.query({id: $stateParams['tournament_id']}, function () {
+                if (td.properties.status == 'Not started')
+                    $scope.isNotStated = true;
+                if (td.properties.status == 'Canceled')
+                    $scope.isCanceled = true;
+                startTournament(td, JSON.parse(participants));
+                $scope.td = td;
+                console.log(td);
+            });
         });
-        var tournamentData = tournamentDataById.query({id: $stateParams['tournament_id']}, function () {
-            startTournament(tournamentData, JSON.parse(attendants));
-        });
 
 
-        $scope.at = attendants;
-        $scope.td = tournamentData;
 
-        console.log(attendants);
-        console.log(tournamentData);
+
 
 
         //// END OF TOURNAMENT BRACKET TAB //////

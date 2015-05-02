@@ -42,6 +42,7 @@ angular.module('djangoAuthModule', [])
             }))
             .error(angular.bind(this,function(data, status, headers, config) {
                 console.log("error syncing with: " + url);
+                    console.log(data);
                 // Set request status
                 if(data){
                     data.status = status;

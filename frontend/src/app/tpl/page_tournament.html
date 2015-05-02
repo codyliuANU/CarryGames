@@ -1,31 +1,24 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="PageTournamentController" xmlns="http://www.w3.org/2000/svg">
     <div class="col">
         <div ng-style="{'background-image': 'url('+ tournamentData.background +')'}" class="back-image">
-            <div class="wrapper-lg bg-white-opacity">
+            <div class="wrapper-lg bg-black-opacity">
                 <div class="row m-t text-white">
                     <div class="col-sm-7">
                         <div class="clear m-b">
                             <div class="m-b m-t-sm">
                                 <span class="h1">{{ tournamentData.name }}</span>
                             </div>
-                            <p class="m-b">
-                                <span class=h3">Статус: регистрация участников</span>
-                            </p>
                         </div>
                     </div>
                     <div class="col-sm-5">
                         <div class="pull-right pull-none-xs text-center">
                             <div>
-                                <a href class="m-b-md inline m">
-                                    <span class="h3 block font-bold">2k</span>
-                                    <small>Followers</small>
-                                </a>
-                                <a href class="m-b-md inline m">
-                                    <span class="h3 block font-bold">250</span>
-                                    <small>Following</small>
+                                <a href class="m-b-md text-white inline m">
+                                    <span class="h3 block">{{ td.properties.status }}</span>
+                                    Статус
                                 </a>
                             </div>
-                            <a  ng-if="!isAlreadyAttendant" href class="btn btn-lg btn-success btn-rounded" ng-click="addAttendant()">Участвовать</a>
+                            <a  ng-if="!isAlreadyAttendant && isNotStated && !isCanceled" href class="btn btn-lg btn-success btn-rounded" ng-click="addAttendant()">Участвовать</a>
                         </div>
                     </div>
                 </div>
@@ -36,16 +29,19 @@
                 <tab heading="Сетка">
                     <div class="row">
                         <div class="col-md-12">
+                            <pre ng-if="isNotStated" class="alert alert-danger text-left"><strong>Турнираная сетка для данного турнира еще не сгенерирована.</strong></pre>
+                            <pre ng-if="isCanceled" class="alert alert-danger text-left"><strong>К сожалению, данный турнир был отменен. Приносим свои извенения.</strong></pre>
                             <!-- Bracket control -->
-                            <ngbracket bracket-data="bracketData"></ngbracket>
+                            <ngbracket ng-if="!isNotStated" bracket-data="bracketData"></ngbracket>
                         </div>
                     </div>
                 </tab>
                 <tab heading="Информация">
                     <div class="row">
                         <div class="col-md-8">
-                            <pre ng-if="isAlreadyAttendant" class="alert alert-info text-left"><strong>Вы уже зарегестрированы на данный турнир!<br>До начала турнира: </strong>{{ diff }}</pre>
-                            <pre ng-if="!isAlreadyAttendant" class="alert alert-success text-left"><strong>Регистрация на данный турнир открыта. Вы можете присоединиться, если желаете!<br>До начала турнира: </strong>{{ diff }}</pre>
+                            <pre ng-if="isAlreadyAttendant && isNotStarted && !isCanceled" class="alert alert-info text-left"><strong>Вы уже зарегестрированы на данный турнир!<br>До начала турнира: </strong>{{ diff }}</pre>
+                            <pre ng-if="!isAlreadyAttendant && isNotStarted && !isCanceled" class="alert alert-success text-left"><strong>Регистрация на данный турнир открыта. Вы можете присоединиться, если желаете!<br>До начала турнира: </strong>{{ diff }}</pre>
+                            <pre ng-if="isCanceled" class="alert alert-danger text-left"><strong>К сожалению, данный турнир был отменен. Приносим свои извенения.</strong></pre>
                             <div class="panel panel-default">
                                 <div class="panel-heading">Правила и условия</div>
                                 <div class="panel-body">
@@ -135,16 +131,43 @@
                                 </tr>
                               </tbody>
                             </table>
-                            <a href ng-if="!isAlreadyAttendant" class="btn btn-lg btn-success btn-rounded pull-right m-r-md" ng-click="addAttendant()">Участвовать</a>
+                            <a href ng-if="!isAlreadyAttendant && isNotStated && !isCanceled" class="btn btn-lg btn-success btn-rounded pull-right m-r-md" ng-click="addAttendant()">Участвовать</a>
                         </div>
                     </div>
                 </tab>
                 <tab heading="Участники">
-                    <div class="row">
-                        <div class="col-md-8">
-
-                        </div>
-                    </div>
+                    <div class="panel ">
+                <div class="panel-body b-b b-light">
+                  Поиск: <input id="filter" type="text" class="form-control input-sm w-sm inline m-r"/>
+                </div>
+                <div>
+                  <table class="table m-b-none" ui-jq="footable" data-filter="#filter" data-page-size="10">
+                    <thead>
+                      <tr>
+                          <th>
+                              ID
+                          </th>
+                          <th>
+                              BattleTag
+                          </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="t in attendantsData">
+                          <td>{{ t.id }}</td>
+                          <td><img class="flag" style="padding-right: 10px" src="/static/assets/img/heroes_icons/{{ t.flag }}"/>{{ t.name  }}</td>
+                      </tr>
+                    </tbody>
+                    <tfoot class="hide-if-no-paging">
+                      <tr>
+                          <td colspan="10" class="text-center">
+                              <ul class="pagination"></ul>
+                          </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
                 </tab>
                 <tab heading="Трансляции">Этот раздел находится в разработке</tab>
             </tabset>

@@ -242,11 +242,16 @@ class Tournament(models.Model):
             rounds[rounds.__len__() - 1].save()
             rounds[rounds.__len__() - 1].matches.add(bronze_match)
 
+        self.t_data.properties.status = 'In progress'
+        self.t_data.properties.save()
+
     def generate(self, play_bronze_match):
         attendants = list(self.attendant_set.all())
 
         if attendants.__len__() < 3:
-            return "Not enough attendants to start the tournament"
+            self.t_data.properties.status = 'Canceled'
+            self.t_data.properties.save()
+            return "Not enough attendants to start the tournament. Tournament will cancel"
 
         self.create_tournament(attendants=attendants, play_bronze_match=play_bronze_match, conference="C1")
         return "Tournament was created"

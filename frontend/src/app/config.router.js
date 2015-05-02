@@ -39,7 +39,12 @@ angular.module('app')
               })
               .state('app.tournaments.new', {
                   url: '/new',
-                  templateUrl: 'tpl/new_tournament.html'
+                  templateUrl: 'tpl/new_tournament.html',
+                  resolve: {
+                      authenticated: ['djangoAuth', function(djangoAuth){
+                        return djangoAuth.authenticationStatus(true)
+                      }]
+                  }
               })
               .state('app.dashboard-v1', {
                   url: '/dashboard-v1',
