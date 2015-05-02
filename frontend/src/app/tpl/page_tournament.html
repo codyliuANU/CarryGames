@@ -18,7 +18,7 @@
                                     Статус
                                 </a>
                             </div>
-                            <a  ng-if="!isAlreadyAttendant && isNotStated && !isCanceled" href class="btn btn-lg btn-success btn-rounded" ng-click="addAttendant()">Участвовать</a>
+                            <a  ng-if="!isAlreadyAttendant && isNotStarted && !isCanceled" href class="btn btn-lg btn-success btn-rounded" ng-click="addAttendant()">Участвовать</a>
                         </div>
                     </div>
                 </div>
@@ -29,10 +29,10 @@
                 <tab heading="Сетка">
                     <div class="row">
                         <div class="col-md-12">
-                            <pre ng-if="isNotStated" class="alert alert-danger text-left"><strong>Турнираная сетка для данного турнира еще не сгенерирована.</strong></pre>
+                            <pre ng-if="isNotStarted" class="alert alert-danger text-left"><strong>Турнираная сетка для данного турнира еще не сгенерирована.</strong></pre>
                             <pre ng-if="isCanceled" class="alert alert-danger text-left"><strong>К сожалению, данный турнир был отменен. Приносим свои извенения.</strong></pre>
                             <!-- Bracket control -->
-                            <ngbracket ng-if="!isNotStated" bracket-data="bracketData"></ngbracket>
+                            <ngbracket ng-if="!isNotStarted" bracket-data="bracketData"></ngbracket>
                         </div>
                     </div>
                 </tab>
@@ -131,7 +131,7 @@
                                 </tr>
                               </tbody>
                             </table>
-                            <a href ng-if="!isAlreadyAttendant && isNotStated && !isCanceled" class="btn btn-lg btn-success btn-rounded pull-right m-r-md" ng-click="addAttendant()">Участвовать</a>
+                            <a href ng-if="!isAlreadyAttendant && isNotStarted && !isCanceled" class="btn btn-lg btn-success btn-rounded pull-right m-r-md" ng-click="addAttendant()">Участвовать</a>
                         </div>
                     </div>
                 </tab>

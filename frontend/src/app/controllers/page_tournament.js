@@ -6,7 +6,7 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
 
         var dateToStart = null;
         $scope.isAlreadyAttendant = false;
-        $scope.isNotStated = false;
+        $scope.isNotStarted = false;
         $scope.isCanceled = false;
 
         function formatDate(d) {
@@ -153,6 +153,8 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
                 console.log("SUCCESS");
                 console.log(data);
                 $scope.isAlreadyAttendant = true;
+                $scope.attendantsData.push(data);
+                console.log($scope.attendantsData);
             }, function (data) {
                 console.log("FAILED");
                 console.log(data);
@@ -180,7 +182,7 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
         function startTournament(td, teams) {
             $scope.bracketData.teams = teams;
             $scope.bracketData.tournament = td;
-            if(!$scope.isNotStated && !$scope.isCanceled)
+            if(!$scope.isNotStarted && !$scope.isCanceled)
                 $scope.bracketData.reload();
         }
 
@@ -193,7 +195,7 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
 
             td = tournamentDataById.query({id: $stateParams['tournament_id']}, function () {
                 if (td.properties.status == 'Not started')
-                    $scope.isNotStated = true;
+                    $scope.isNotStarted = true;
                 if (td.properties.status == 'Canceled')
                     $scope.isCanceled = true;
                 startTournament(td, JSON.parse(participants));

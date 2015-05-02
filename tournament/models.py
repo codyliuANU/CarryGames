@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from authentication.models import Account
 
 
@@ -32,6 +32,7 @@ class Tournament(models.Model):
     t_data = models.OneToOneField(TournamentData)
 
     @classmethod
+    @transaction.atomic
     def create(cls, allmatches='Bo3', semi='Bo3', finals='Bo5', fare=0, **kwargs):
         props = Properties(status="Not started")
         props.save()
@@ -89,7 +90,7 @@ class Tournament(models.Model):
             if match.meta.matchType != 2:
                 x += 1 if match.meta.matchType == 1 else 2
         for i, match in enumerate(list(previous_round.matches.all()), start=x):
-            match.meta.UIShiftDown = match.meta.UIShiftDown + 1 if match.meta.UIShiftDow else 1
+            match.meta.UIShiftDown = match.meta.UIShiftDown + 1 if match.meta.UIShiftDown else 1
 
     def generate_round(self, attendants, round_number, conference):
         new_round = Round()
@@ -178,7 +179,7 @@ class Tournament(models.Model):
             elif shifted_matches < 0:
                 dist = self.get_even_distribution(closest_balance_tree / 2, balancing_round.__len__(), True)
                 j = 0
-                for i in range(0, closest_balance_tree / 2):
+                for i in range(0, int(closest_balance_tree / 2)):
                     match = self.create_match(round_number=round_number + 1,
                                               match_number=round_b.matches.all().__len__() + 1, conference=conference)
                     # c1 = Contestant(account=balancing_round[j].account)
@@ -210,6 +211,7 @@ class Tournament(models.Model):
         del attendants
         return new_round
 
+    @transaction.atomic
     def create_tournament(self, attendants, play_bronze_match, conference):
         round_number = 1
         previous_round = Round()
