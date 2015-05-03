@@ -87,8 +87,8 @@ class Tournament(models.Model):
     def shift_previous_round(current_round, previous_round):
         x = 0
         for match in list(current_round.matches.all()):
-            if match.meta.matchType != 2:
-                x += 1 if match.meta.matchType == 1 else 2
+            if match.meta.matchType != '2':
+                x += 1 if match.meta.matchType == '1' else 2
         for i, match in enumerate(list(previous_round.matches.all()), start=x):
             match.meta.UIShiftDown = match.meta.UIShiftDown + 1 if match.meta.UIShiftDown else 1
 
@@ -107,7 +107,8 @@ class Tournament(models.Model):
             if excess_participants > 0:
                 shifted_matches = excess_participants - (closest_balance_tree / 2)
                 start_index = closest_balance_tree if shifted_matches == 0 else (
-                    int(closest_balance_tree + (shifted_matches * 2) if shifted_matches > 0 else closest_balance_tree - (
+                    int(closest_balance_tree + (
+                        shifted_matches * 2) if shifted_matches > 0 else closest_balance_tree - (
                         abs(shifted_matches) * 2)))
                 balancing_round = attendants[start_index:]
                 del attendants[start_index:]
@@ -258,6 +259,71 @@ class Tournament(models.Model):
         self.create_tournament(attendants=attendants, play_bronze_match=play_bronze_match, conference="C1")
         return "Tournament was created"
 
+    @staticmethod
+    def find_match_by_type(matches, match_type, r_number):
+        for x in matches[r_number].matches.all():
+            if x.meta.matchType == match_type:
+                return x
+        return None
+
+
+    @staticmethod
+    def promote_to_match(next_match, team_id, old_values, first, connecting_match_index, match_index):
+        if next_match is None:
+            return
+
+        if any(x for x in old_values if x == next_match.contestant1.account_id):
+            next_match.contestant1.account = Account.objects.get(id=team_id)
+            next_match.contestant1.save()
+        elif any(x for x in old_values if x == next_match.contestant2.account_id):
+            next_match.contestant2.account = Account.objects.get(id=team_id)
+            next_match.contestant2.save()
+        else:  # normal case
+            if (first or connecting_match_index > match_index) and next_match.contestant1.account_id is None:
+                next_match.contestant1.account = Account.objects.get(id=team_id)
+                next_match.contestant1.save()
+            else:
+                next_match.contestant2.account = Account.objects.get(id=team_id)
+                next_match.contestant2.save()
+
+
+    @transaction.atomic
+    def update_tournament(self, match, winner_id, loser_id, promote_loser):
+        b = match.meta.matchId.split('-')
+        conference = self.t_data.conferences.last()
+        # matches = Match.objects.filter(round__conference=conference)
+        matches = Round.objects.filter(conference=conference)
+        rond = int(b[2])
+        match_index = int(b[3])
+        is_loser_match = b[b.__len__() - 1] == 'L'
+        is_semi_final = rond == (matches.__len__() - 1)
+        connecting_match_index = 0
+
+        t = [match.contestant1.account_id, match.contestant2.account_id]
+
+        if match.meta.matchType == 'finals' or match.meta.matchType == 'bronze':
+            return
+
+        # Push losers to bronze match if there is one
+        if self.t_data.type == 'SE' and is_semi_final and matches[matches.__len__() - 1].matches.all().__len__() > 1:
+            bronze_match = self.find_match_by_type(matches, 'bronze', matches.__len__() - 1)
+            self.promote_to_match(bronze_match, loser_id, t, match_index == 1, connecting_match_index, match_index)
+
+        next_round = matches[rond]
+        loser_bracket_finals = is_loser_match and is_semi_final
+
+        for i in next_round.matches.all():
+            if i.meta.matchType != '2':
+                if is_loser_match and not is_semi_final:
+                    continue
+
+                connecting_match_index += 1 if i.meta.matchType == '1' else 2
+
+                if connecting_match_index >= match_index:
+                    self.promote_to_match(i, winner_id, t, loser_bracket_finals, connecting_match_index, match_index)
+                    break
+
+
 
 class Conference(models.Model):
     tournamentData = models.ForeignKey(TournamentData, related_name='conferences')
@@ -292,6 +358,29 @@ class Match(models.Model):
     contestant1 = models.OneToOneField(Contestant, related_name='contestant1')
     contestant2 = models.OneToOneField(Contestant, related_name='contestant2')
     meta = models.OneToOneField(Meta, related_name='meta')
+    result_user1 = models.CharField()
+    result_user2 = models.CharField()
+
+    @transaction.atomic
+    def calculate_result(self, score1, score2):
+        if (score1 or score2) is None:
+            return
+
+        self.contestant1.score = score1
+        self.contestant1.save()
+        self.contestant2.score = score2
+        self.contestant2.save()
+
+        winner_id = None
+        if (score1 > score2):
+            winner_id = self.contestant1.account_id
+            loser_id = self.contestant2.account_id
+        else:
+            winner_id = self.contestant2.account_id
+            loser_id = self.contestant1.account_id
+
+        promote_loser = False  # Change this if it's gonna be double elimination
+        self.round.conference.tournamentData.tournament.update_tournament(self, winner_id, loser_id, promote_loser)
 
 
 class Reporter(models.Model):
