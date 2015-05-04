@@ -42,6 +42,8 @@ class Account(AbstractBaseUser):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    flag = models.CharField(max_length=20)
+
     objects = AccountManager()
 
     USERNAME_FIELD = 'battle_tag'

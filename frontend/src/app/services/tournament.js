@@ -35,5 +35,15 @@ angular.module('djangoTournamentModule', ['djangoRESTResources'])
             query: { method:'GET', isArray:true}
         });
     }])
+    .factory('matches', ['djResource', function (djResource) {
+        return djResource('/api-v1/matches/', {}, {
+            query: { method:'GET', params:{}, isArray:true }
+        });
+    }])
+    .factory('matchById', ['djResource', function (djResource) {
+        return djResource('/api-v1/matches/:id/', {id: '@id'}, {
+            query: { method:'GET'}
+        });
+    }])
 ;
 

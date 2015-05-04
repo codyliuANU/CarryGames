@@ -1,0 +1,49 @@
+<div class="bg-light lter b-b wrapper-md">
+    <h1 class="m-n font-thin h3">Список матчей</h1>
+</div>
+<div ng-controller="MatchesController" class="wrapper-md">
+    <div class="panel ">
+        <div class="panel-body b-b b-light">
+            Поиск: <input id="filter" type="text" class="form-control input-sm w-sm inline m-r"/>
+        </div>
+        <div>
+            <table class="table m-b-none" ui-jq="footable" data-filter="#filter" data-page-size="10">
+                <thead>
+                <tr>
+                    <th>
+                        Раунд
+                    </th>
+                    <th>
+                        Игрок 1
+                    </th>
+                    <th>
+                        Игрок 2
+                    </th>
+                    <th>
+                        Результат
+                    </th>
+                    <th>
+                        Статус
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="m in matches">
+                    <td>{{ m.meta.matchId.split('-')[2] }}</td>
+                    <td ng-class="{matchwinner: m.contestant1.score > m.contestant2.score}"><img class="flag" style="padding-right: 10px" src="/static/assets/img/heroes_icons/{{ m.contestant1.account.flag }}"/>{{ m.contestant1.account.battle_tag }}</td>
+                    <td ng-class="{matchwinner: m.contestant2.score > m.contestant1.score}"><img class="flag" style="padding-right: 10px" src="/static/assets/img/heroes_icons/{{ m.contestant2.account.flag }}"/>{{ m.contestant2.account.battle_tag }}</td>
+                    <td>{{ m.contestant1.score + '-' + m.contestant2.score }}</td>
+                    <td>{{ m.status }}</td>
+                </tr>
+                </tbody>
+                <tfoot class="hide-if-no-paging">
+                <tr>
+                    <td colspan="10" class="text-center">
+                        <ul class="pagination"></ul>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

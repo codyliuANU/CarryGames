@@ -46,6 +46,22 @@ angular.module('app')
                       }]
                   }
               })
+              .state('app.matches', {
+                  url: '/matches',
+                  template: '<div ui-view class="fade-in-up"></div>'
+              })
+              .state('app.matches.all', {
+                  url: '/',
+                  templateUrl: 'tpl/matches.html'
+              })
+              .state('app.matches.my', {
+                  url: '/my/',
+                  templateUrl: 'tpl/matches.html'
+              })
+              .state('app.matches.id', {
+                  url: '/{match_id}/',
+                  templateUrl: 'tpl/page_match.html'
+              })
               .state('app.dashboard-v1', {
                   url: '/dashboard-v1',
                   templateUrl: 'tpl/app_dashboard_v1.html'

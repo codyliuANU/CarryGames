@@ -171,3 +171,17 @@ class TournamentSerializer(serializers.ModelSerializer):
         return new_tournament
 
 
+class ContestantSerializerForMatch(serializers.ModelSerializer):
+    account = AccountSerializer(read_only=True)
+
+    class Meta:
+        model = Contestant
+
+
+class MatchListSerializer(serializers.ModelSerializer):
+    contestant1 = ContestantSerializerForMatch()
+    contestant2 = ContestantSerializerForMatch()
+    meta = MetaSerializer()
+
+    class Meta:
+        model = Match

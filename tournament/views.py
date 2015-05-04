@@ -1,17 +1,23 @@
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from tournament.models import Match, Attendant, TournamentData, Tournament
-from tournament.serializers import MatchSerializer, AttendantSerializer, TournamentDataSerializer, TournamentSerializer
+from tournament.serializers import MatchSerializer, AttendantSerializer, TournamentDataSerializer, TournamentSerializer, \
+    MatchListSerializer
 
 
-class MatchViewSet(viewsets.GenericViewSet):
+class MatchViewSet(viewsets.ModelViewSet):
 
     queryset = Match.objects.all()
+    serializer_class = MatchListSerializer
 
-    def retrieve(self, request, pk=None):
-        queryset = Match.objects.get(id=pk)
-        serializer = MatchSerializer(queryset)
-        return Response(serializer.data)
+    def perform_create(self, serializer):
+        pass
+
+    def update(self, request, *args, **kwargs):
+        pass
+
+    def destroy(self, request, *args, **kwargs):
+        pass
 
 
 class AttendantViewSet(viewsets.ModelViewSet):

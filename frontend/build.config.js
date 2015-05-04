@@ -163,7 +163,7 @@ module.exports = {
         'vendor/jquery/fullcalendar/theme.css',
 
         //fONTS
-        'vendor/font-awesome/css/font-awesome.min.css',
+        'vendor/font-awesome/css/font-awesome.css',
         'vendor/font-awesome/css/simple-line-icons.css',
         'vendor/font-awesome/css/font.css'
     ],

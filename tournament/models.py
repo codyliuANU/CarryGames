@@ -2,6 +2,10 @@ from django.db import models, transaction
 from authentication.models import Account
 
 
+class NotAllowedForTheUser(Exception):
+    pass
+
+
 class Properties(models.Model):
     status = models.CharField(max_length=20)
     unbalanced = models.CharField(max_length=10, null=True)
@@ -324,7 +328,6 @@ class Tournament(models.Model):
                     break
 
 
-
 class Conference(models.Model):
     tournamentData = models.ForeignKey(TournamentData, related_name='conferences')
 
@@ -358,8 +361,10 @@ class Match(models.Model):
     contestant1 = models.OneToOneField(Contestant, related_name='contestant1')
     contestant2 = models.OneToOneField(Contestant, related_name='contestant2')
     meta = models.OneToOneField(Meta, related_name='meta')
-    result_user1 = models.CharField()
-    result_user2 = models.CharField()
+    result_user1 = models.CharField(max_length=10, null=True)
+    result_user2 = models.CharField(max_length=10, null=True)
+    status = models.CharField(max_length=15)
+    mode = models.CharField(max_length=5)
 
     @transaction.atomic
     def calculate_result(self, score1, score2):
@@ -382,11 +387,29 @@ class Match(models.Model):
         promote_loser = False  # Change this if it's gonna be double elimination
         self.round.conference.tournamentData.tournament.update_tournament(self, winner_id, loser_id, promote_loser)
 
+    @classmethod
+    def ambivalent_result(cls):
+        print("SEND MESSAGE TO AMDIN AND USERS")
 
-class Reporter(models.Model):
-    pass
+    def check_equality(self):
+        if self.result_user1.__len__() == self.result_user2.__len__():
+            for i, ch in enumerate(self.result_user1):
+                if ch == self.result_user2[i]:  # Results from users has to be opposite like(user1:'101', user2:'010')
+                    self.ambivalent_result()
+                    return
+            self.calculate_result(self.result_user1.count('1'), self.result_user2.count('1'))
 
+    def set_value(self, user, value):
+        if self.contestant1.account_id == user.id:
+            self.result_user1 = value
+            self.save()
+            if self.result_user2 is not None:
+                self.check_equality()
+        elif self.contestant2.account_id == user.id:
+            self.result_user2 = value
+            self.save()
+            if self.result_user1 is not None:
+                self.check_equality()
+        else:
+            raise NotAllowedForTheUser("You can't set value for other users")
 
-class Article(models.Model):
-    text = models.CharField(max_length=10)
-    reporter = models.ForeignKey(Reporter, null=True)
