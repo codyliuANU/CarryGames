@@ -1,4 +1,5 @@
 from django.db import models, transaction
+import math
 from authentication.models import Account
 
 
@@ -365,6 +366,9 @@ class Match(models.Model):
     result_user2 = models.CharField(max_length=10, null=True)
     status = models.CharField(max_length=15)
     mode = models.CharField(max_length=5)
+    current_state = models.IntegerField(default=1)
+    temp_score_user1 = models.IntegerField(default=0)
+    temp_score_user2 = models.IntegerField(default=0)
 
     @transaction.atomic
     def calculate_result(self, score1, score2):
@@ -375,6 +379,8 @@ class Match(models.Model):
         self.contestant1.save()
         self.contestant2.score = score2
         self.contestant2.save()
+        self.status = 'Finished'
+        self.save()
 
         winner_id = None
         if (score1 > score2):
@@ -389,27 +395,59 @@ class Match(models.Model):
 
     @classmethod
     def ambivalent_result(cls):
-        print("SEND MESSAGE TO AMDIN AND USERS")
+        print('log result of user are different, message was sent to manager')
+
+    def check_for_complete_temp_state(self):
+        if (self.temp_score_user1 >= math.ceil(float(self.mode[2]) / 2)) or (
+                    self.temp_score_user2 >= math.ceil(float(self.mode[2]) / 2)):
+            print('log match is complete, 2-0 will write to DB')
+            self.calculate_result(self.temp_score_user1, self.temp_score_user2)
 
     def check_equality(self):
-        if self.result_user1.__len__() == self.result_user2.__len__():
-            for i, ch in enumerate(self.result_user1):
-                if ch == self.result_user2[i]:  # Results from users has to be opposite like(user1:'101', user2:'010')
-                    self.ambivalent_result()
-                    return
-            self.calculate_result(self.result_user1.count('1'), self.result_user2.count('1'))
+        if self.result_user1 is not None and self.result_user2 is not None:
+            if self.result_user1 == '1' and self.result_user2 == '0':
+                self.temp_score_user1 += 1
+                self.result_user1 = None
+                self.result_user2 = None
+                self.current_state += 1
+                self.save()
+                print('log results are equal user1 +1 win')
+                self.check_for_complete_temp_state()
+            elif self.result_user1 == '0' and self.result_user2 == '1':
+                self.temp_score_user2 += 1
+                self.result_user1 = None
+                self.result_user2 = None
+                self.current_state += 1
+                self.save()
+                print('log results are equal user2 +1 win')
+                self.check_for_complete_temp_state()
+            else:
+                self.ambivalent_result()
 
     def set_value(self, user, value):
-        if self.contestant1.account_id == user.id:
-            self.result_user1 = value
-            self.save()
-            if self.result_user2 is not None:
-                self.check_equality()
-        elif self.contestant2.account_id == user.id:
-            self.result_user2 = value
-            self.save()
-            if self.result_user1 is not None:
-                self.check_equality()
+        if self.status == 'In progress' or self.status == 'Created':
+            if self.contestant1.account_id == user.id:
+                if self.result_user1 is None or self.result_user1 == '':
+                    self.result_user1 = value
+                    print('log user1 add result (state)')
+                    self.save()
+                    if self.result_user2 is not None:
+                        self.check_equality()
+                else:
+                    raise NotAllowedForTheUser("You can't rewrite value that was already sent")
+                    print('log user1 try to rewrite result')
+            elif self.contestant2.account_id == user.id:
+                if self.result_user2 is None or self.result_user2 == '':
+                    self.result_user2 = value
+                    print('log user2 add result (state)')
+                    self.save()
+                    if self.result_user1 is not None:
+                        self.check_equality()
+                else:
+                    raise NotAllowedForTheUser("You can't rewrite value that was already sent")
+                    print('log user2 try to rewrite result')
+            else:
+                raise NotAllowedForTheUser("You can't set value for other users")
         else:
-            raise NotAllowedForTheUser("You can't set value for other users")
+            raise Exception("Math already finished")
 

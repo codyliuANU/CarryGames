@@ -3,6 +3,7 @@
         <div class="wrapper">
             <div class="panel panel-default">
                 <div class="panel-body">
+                    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
                     <div class="row">
                         <div class="col-md-4">
                             <pre class="alert alert-default text-left"><strong>Турнир: </strong> название </pre>
@@ -38,28 +39,33 @@
                     </div>
                     <div class="row m-t-md">
                         <div class="col-md-8 col-md-offset-2">
-                            <div class="panel panel-default">
-                                <div class="panel-heading"><strong>Менеджер результатов</strong>
-                                    (режим: {{ match.mode }})
+                            <div ng-if="isManagerResult" class="panel panel-default">
+                                <div class="panel-heading" style="height:50px;">
+                                    <div>
+                                        <strong>Менеджер результатов</strong>
+                                        (режим: {{ match.mode }})
+                                        <button class="btn btn-sm btn-icon btn-primary pull-right" ng-click="refresh()"><i class="fa fa-spi fa-refresh" ng-class="refreshclass"></i></button>
+                                    </div>
                                 </div>
                                 <div class="panel-body">
                                     <pre class="alert alert-info text-left"><strong>Отправьте результат, ПОСЛЕ окончания всех боев.</strong><br>В случае нарушения правил или отсутствия соперника, выберите опцию ниже.</pre>
-                                    <div ng-if="!miss && !violation" class="m-b-sm" ng-repeat="f in results">
+                                    <pre ng-if="!isAvailableToSetValue" class="alert alert-warning text-left">Соперник еще не подтвердил результат матча.</pre>
+                                    <div ng-if="!miss && !violation && isAvailableToSetValue" class="m-b-sm">
                                         <div class="row">
                                             <div class="col-md-4 text-center">
-                                                <span class="h3 m-r-md">{{ "Бой " + ($index + 1) + ": " }}</span>
+                                                <span class="h3 m-r-md">{{ "Бой " + (match.current_state) + ": " }}</span>
                                             </div>
                                             <div class="col-md-8">
                                                 <div class="btn-group btn-group-justified"
-                                                     ng-init="f.model  =  f.value ">
-                                                    <label class="btn btn-danger" ng-model="f.model" btn-radio="'0'"><i
+                                                     ng-init="btns.model  =  '-'">
+                                                    <label class="btn btn-danger" ng-model="btns.model" btn-radio="'0'"><i
                                                             class="fa fa-check text-active"></i> Поражение</label>
-                                                    <label class="btn btn-success" ng-model="f.model"
+                                                    <label class="btn btn-success" ng-model="btns.model"
                                                            btn-radio="'1'"><i class="fa fa-check text-active"></i>
                                                         Победа</label>
-                                                    <label class="btn btn-default" ng-model="f.model"
+                                                    <label class="btn btn-default" ng-model="btns.model"
                                                            btn-radio="'-'"><i class="fa fa-check text-active"></i>
-                                                        Нет результата</label>
+                                                        Нет итога</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -70,7 +76,7 @@
                                     <span class="checkbox">
                                         <label class="i-checks" popover="Отправьте скриншот с описанием нарушения менеджеру турнира, в противном случае, эта опция не сработает."
                                                popover-trigger="mouseenter">
-                                            <input type="checkbox" value="" ng-model="violation">
+                                            <input type="checkbox" ng-model="violation" >
                                             <i></i>
                                             Оппонент нарушил правила
                                         </label>
@@ -80,14 +86,14 @@
                                     <span class="checkbox">
                                         <label class="i-checks" popover="Через 15 мин. оппоненту будет защитан тех. проигрыш."
                                                popover-trigger="mouseenter">
-                                            <input type="checkbox" value="" ng-model="miss">
+                                            <input type="checkbox" ng-model="miss">
                                             <i></i>
                                             Оппонент отсутствует
                                         </label>
                                     </span>
                                         </div>
                                     </div>
-                                    <button class="btn m-b-xs btn-primary pull-right">Отправить</button>
+                                    <button class="btn m-b-xs btn-primary pull-right" ng-class="{'disabled': !violation && !miss && btns.model == '-'}" ng-click="sendResult()">Отправить</button>
                                 </div>
                             </div>
                         </div>

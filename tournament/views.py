@@ -1,6 +1,7 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from tournament.models import Match, Attendant, TournamentData, Tournament
+from tournament.models import Match, Attendant, TournamentData, Tournament, NotAllowedForTheUser
 from tournament.serializers import MatchSerializer, AttendantSerializer, TournamentDataSerializer, TournamentSerializer, \
     MatchListSerializer
 
@@ -13,8 +14,16 @@ class MatchViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         pass
 
-    def update(self, request, *args, **kwargs):
-        pass
+    def update(self, request, pk=None):
+        try:
+            match = Match.objects.get(id=pk)
+            match.set_value(request.user, request.data['value_to_setup'])
+        except NotAllowedForTheUser as e:
+            return Response(str(e), status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        serializer = MatchListSerializer(match)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
     def destroy(self, request, *args, **kwargs):
         pass
@@ -49,3 +58,4 @@ class TournamentViewSet(viewsets.ModelViewSet):
     # def list(self, request):
     #     qs = self.get_queryset()
     #     return Response(TournamentSerializer(qs, many=True).data)
+

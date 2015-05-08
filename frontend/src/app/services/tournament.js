@@ -42,7 +42,8 @@ angular.module('djangoTournamentModule', ['djangoRESTResources'])
     }])
     .factory('matchById', ['djResource', function (djResource) {
         return djResource('/api-v1/matches/:id/', {id: '@id'}, {
-            query: { method:'GET'}
+            query: { method:'GET'},
+            setValue: {method:'PUT'}
         });
     }])
 ;
