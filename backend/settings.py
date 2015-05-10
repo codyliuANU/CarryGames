@@ -118,6 +118,7 @@ INSTALLED_APPS = (
     'rest_auth',
     'djoser',
     'tournament',
+    'TLogger',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'

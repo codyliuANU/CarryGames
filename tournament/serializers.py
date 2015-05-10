@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from rest_framework import serializers
 from rest_framework.fields import SkipField
+from TLogger.serializers import LogManagerSerializer
 from authentication.models import Account
 from authentication.serializers import AccountSerializer
 import tournament
@@ -138,7 +139,7 @@ class AttendantSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'name', 'account')
 
     def create(self, validated_data):
-        flag = "rus.png"  # TODO: hardcoded value, need to decide how to use the variable
+        flag = self.context['request'].user.flag
         tournament = Tournament.objects.get(id=validated_data['tournament_id'])
         new_attendant = Attendant(account=self.context['request'].user, tournament=tournament, gameClass=flag)
         new_attendant.save()
@@ -182,6 +183,7 @@ class MatchListSerializer(serializers.ModelSerializer):
     contestant1 = ContestantSerializerForMatch()
     contestant2 = ContestantSerializerForMatch()
     meta = MetaSerializer()
+    log_manager = LogManagerSerializer()
 
     class Meta:
         model = Match

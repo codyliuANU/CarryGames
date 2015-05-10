@@ -1,6 +1,13 @@
 from django.db import models, transaction
 import math
+from TLogger.models import LogManager, LogMessage
 from authentication.models import Account
+
+
+def get_log_manager():
+    manager = LogManager()
+    manager.save()
+    return manager
 
 
 class NotAllowedForTheUser(Exception):
@@ -35,6 +42,7 @@ class Tournament(models.Model):
     region = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
     t_data = models.OneToOneField(TournamentData)
+    log_manager = models.OneToOneField(LogManager, null=True)
 
     @classmethod
     @transaction.atomic
@@ -43,6 +51,7 @@ class Tournament(models.Model):
         props.save()
         tournament_data = TournamentData(type=kwargs['format'], properties=props)
         tournament_data.save()
+        lm = get_log_manager()
         tour = cls(name=kwargs['name'],
                    allmatches=allmatches,
                    semi=semi,
@@ -55,7 +64,8 @@ class Tournament(models.Model):
                    account=kwargs['account'],
                    background=kwargs['background'],
                    region=kwargs['region'],
-                   t_data=tournament_data
+                   t_data=tournament_data,
+                   log_manager=lm
                    )
         tour.save()
         conference = Conference(tournamentData=tournament_data)
@@ -64,13 +74,14 @@ class Tournament(models.Model):
 
     @staticmethod
     def create_match(round_number, match_number, conference):
+        lm = get_log_manager()
         meta = Meta(matchId="match-" + conference + '-' + str(round_number) + '-' + str(match_number))
         meta.save()
         contestant1 = Contestant()
         contestant1.save()
         contestant2 = Contestant()
         contestant2.save()
-        return Match(meta=meta, contestant1=contestant1, contestant2=contestant2)
+        return Match(meta=meta, contestant1=contestant1, contestant2=contestant2, log_manager=lm)
 
     @staticmethod
     def get_even_distribution(round_len, number_of_attendants, promoted_round):
@@ -252,6 +263,8 @@ class Tournament(models.Model):
 
         self.t_data.properties.status = 'In progress'
         self.t_data.properties.save()
+        LogMessage(author=Account.objects.get(id=37), manager=self.log_manager,
+                   message="Tournament was created successfully").save()
 
     def generate(self, play_bronze_match):
         attendants = list(self.attendant_set.all())
@@ -364,11 +377,12 @@ class Match(models.Model):
     meta = models.OneToOneField(Meta, related_name='meta')
     result_user1 = models.CharField(max_length=10, null=True)
     result_user2 = models.CharField(max_length=10, null=True)
-    status = models.CharField(max_length=15)
+    status = models.CharField(max_length=15, default='Created')
     mode = models.CharField(max_length=5)
     current_state = models.IntegerField(default=1)
     temp_score_user1 = models.IntegerField(default=0)
     temp_score_user2 = models.IntegerField(default=0)
+    log_manager = models.OneToOneField(LogManager, null=True)
 
     @transaction.atomic
     def calculate_result(self, score1, score2):
