@@ -8,8 +8,10 @@ app.controller('MatchesController', ['$scope', 'matches', '$state',
 
             if($state.is('app.matches.my')){
                 $scope.matches = $scope.matches.filter(function (x) {
-                    if(x.contestant1.account.id == $scope.account.id || $scope.account.id == x.contestant2.account.id)
-                        return x
+                    if($scope.account.id)
+                        if((x.contestant1.account && x.contestant1.account.id == $scope.account.id) ||
+                           (x.contestant2.account && $scope.account.id == x.contestant2.account.id))
+                            return x
                 });
             }
 

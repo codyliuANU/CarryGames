@@ -83,6 +83,7 @@ class MatchSerializer(NonNullSerializer):
     class Meta:
         model = Match
         fields = ('team1', 'team2', 'meta')
+        read_only_fields = ('log_manager',)
 
 
 class RoundField(serializers.Field):
@@ -149,10 +150,11 @@ class AttendantSerializer(serializers.ModelSerializer):
 class TournamentSerializer(serializers.ModelSerializer):
     format = serializers.CharField(max_length=2, write_only=True)
     account = AccountSerializer(read_only=True)
+    log_manager = LogManagerSerializer(read_only=True)
 
     class Meta:
         model = Tournament
-        read_only_fields = ('account', 'created_at', 't_data')
+        read_only_fields = ('account', 'created_at', 't_data', 'log_manager',)
 
     def create(self, validated_data):
         new_tournament = Tournament.create(name=validated_data['name'],
@@ -183,7 +185,8 @@ class MatchListSerializer(serializers.ModelSerializer):
     contestant1 = ContestantSerializerForMatch()
     contestant2 = ContestantSerializerForMatch()
     meta = MetaSerializer()
-    log_manager = LogManagerSerializer()
+    log_manager = LogManagerSerializer(read_only=True)
 
     class Meta:
         model = Match
+        read_only_fields = ('log_manager',)

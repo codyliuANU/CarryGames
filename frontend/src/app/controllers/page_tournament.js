@@ -103,6 +103,11 @@ app.controller('PageTournamentController', ['$scope', 'tournamentById', '$stateP
             if (!data.background) //default background
                 data.background = "/static/assets/img/img551f2216e17ef.jpg";
             $scope.tournamentData = data;
+            $scope.logs = data.log_manager.log_messages;
+            $scope.logs.forEach(function(elem, index, array) {
+                var d = new Date(elem.created_at);
+                elem.created_at = formatDate(d) + ", " + formatTime(d);
+            });
             calcDatesForGraph(data);
         });
 

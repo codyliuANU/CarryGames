@@ -1,6 +1,6 @@
 <div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="PageMatchController" xmlns="http://www.w3.org/2000/svg">
     <div class="col">
-        <div class="wrapper">
+        <div class="wrapper" style="margin-bottom: 0; padding-bottom: 0;">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
@@ -99,6 +99,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row wrapper" style="padding-top: 0; margin-top: 0;">
+            <div class="col-md-12">
+                <div data-ng-include="'tpl/blocks/log.html'"></div>
             </div>
         </div>
     </div>

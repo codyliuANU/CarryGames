@@ -46,7 +46,7 @@ class Tournament(models.Model):
 
     @classmethod
     @transaction.atomic
-    def create(cls, allmatches='Bo3', semi='Bo3', finals='Bo5', fare=0, **kwargs):
+    def create(cls, allmatches, semi, finals, fare=0, **kwargs):
         props = Properties(status="Not started")
         props.save()
         tournament_data = TournamentData(type=kwargs['format'], properties=props)
@@ -73,7 +73,7 @@ class Tournament(models.Model):
         return tour
 
     @staticmethod
-    def create_match(round_number, match_number, conference):
+    def create_match(round_number, match_number, conference, mode):
         lm = get_log_manager()
         meta = Meta(matchId="match-" + conference + '-' + str(round_number) + '-' + str(match_number))
         meta.save()
@@ -81,7 +81,7 @@ class Tournament(models.Model):
         contestant1.save()
         contestant2 = Contestant()
         contestant2.save()
-        return Match(meta=meta, contestant1=contestant1, contestant2=contestant2, log_manager=lm)
+        return Match(meta=meta, contestant1=contestant1, contestant2=contestant2, log_manager=lm, mode=mode)
 
     @staticmethod
     def get_even_distribution(round_len, number_of_attendants, promoted_round):
@@ -132,7 +132,7 @@ class Tournament(models.Model):
         # Loop through teams / previous round matches and create following match
         for index, attendant in enumerate(attendants):
             match = self.create_match(round_number=round_number, match_number=new_round.matches.all().__len__() + 1,
-                                      conference=conference)
+                                      conference=conference, mode=self.allmatches)
 
             if round_number == 1:
                 # normal brackets untill reaching biggest possible balanced tree...
@@ -149,11 +149,16 @@ class Tournament(models.Model):
                 match.contestant2.account = attendants[index + 1].account
                 match.contestant2.save()
 
+                self.log_manager.log_by_admin(
+                    attendant.account.battle_tag + " сразится с " + attendants[index + 1].account.battle_tag)
+
             elif index % 2 != 0:
                 continue
 
             new_round.save()
             new_round.matches.add(match)
+            self.log_manager.log_by_admin("Был создан матч: " + match.meta.matchId)
+            match.log_manager.log_by_admin("Матч был успешно создан")
 
         dist = None
         if round_number == 1 and balancing_round is not None and balancing_round.__len__() > 0:
@@ -166,7 +171,7 @@ class Tournament(models.Model):
             if shifted_matches == 0:
                 for bal_round in balancing_round:
                     match = self.create_match(round_number=round_number + 1,
-                                              match_number=round_b.matches.all().__len__() + 1, conference=conference)
+                                              match_number=round_b.matches.all().__len__() + 1, conference=conference, mode=self.allmatches)
                     # c1 = Contestant(account=bal_round.account)
                     # c1.save()
                     # match.contestant1_id = c1.id
@@ -176,12 +181,14 @@ class Tournament(models.Model):
                     match.meta.save()
                     round_b.save()
                     round_b.matches.add(match)
+                    self.log_manager.log_by_admin("Был создан матч: " + match.meta.matchId)
+                    match.log_manager.log_by_admin("Матч был успешно создан")
             elif shifted_matches > 0:
                 dist = self.get_even_distribution(closest_balance_tree / 2, balancing_round.__len__(), False)
                 p = 0
                 for i in range(0, dist.__len__()):
                     match = self.create_match(round_number=round_number + 1,
-                                              match_number=round_b.matches.all().__len__() + 1, conference=conference)
+                                              match_number=round_b.matches.all().__len__() + 1, conference=conference, mode=self.allmatches)
                     if dist[i] == 1:
                         # c1 = Contestant(account=balancing_round[p].account)
                         # c1.save()
@@ -193,12 +200,14 @@ class Tournament(models.Model):
                         p += 1
                     round_b.save()
                     round_b.matches.add(match)
+                    self.log_manager.log_by_admin("Был создан матч: " + match.meta.matchId)
+                    match.log_manager.log_by_admin("Матч был успешно создан")
             elif shifted_matches < 0:
                 dist = self.get_even_distribution(closest_balance_tree / 2, balancing_round.__len__(), True)
                 j = 0
                 for i in range(0, int(closest_balance_tree / 2)):
                     match = self.create_match(round_number=round_number + 1,
-                                              match_number=round_b.matches.all().__len__() + 1, conference=conference)
+                                              match_number=round_b.matches.all().__len__() + 1, conference=conference, mode=self.allmatches)
                     # c1 = Contestant(account=balancing_round[j].account)
                     # c1.save()
                     # match.contestant1_id = c1.id
@@ -217,10 +226,15 @@ class Tournament(models.Model):
                         match.meta.save()
                         self.shift_previous_round(round_b, new_round)
                         j += 1
+
+                        self.log_manager.log_by_admin(
+                            balancing_round[j].account.battle_tag + " сразится с " + balancing_round[j + 1].account.battle_tag)
                     j += 1
 
                     round_b.save()
                     round_b.matches.add(match)
+                    self.log_manager.log_by_admin("Был создан матч: " + match.meta.matchId)
+                    match.log_manager.log_by_admin("Матч был успешно создан")
 
             del attendants
             return round_b
@@ -254,17 +268,18 @@ class Tournament(models.Model):
 
         if play_bronze_match:
             bronze_match = self.create_match(rounds.__len__(), rounds[rounds.__len__() - 1].matches.all().__len__() + 1,
-                conference)
+                conference, mode=self.semi)
             bronze_match.meta.matchType = 'bronze'
             bronze_match.meta.save()
 
             rounds[rounds.__len__() - 1].save()
             rounds[rounds.__len__() - 1].matches.add(bronze_match)
+            self.log_manager.log_by_admin("Был создан матч за 3 место: " + bronze_match.meta.matchId)
+            bronze_match.log_manager.log_by_admin("Матч был успешно создан")
 
         self.t_data.properties.status = 'In progress'
         self.t_data.properties.save()
-        LogMessage(author=Account.objects.get(id=37), manager=self.log_manager,
-                   message="Tournament was created successfully").save()
+        self.log_manager.log_by_admin("Турнир создан успешно")
 
     def generate(self, play_bronze_match):
         attendants = list(self.attendant_set.all())
@@ -272,9 +287,14 @@ class Tournament(models.Model):
         if attendants.__len__() < 3:
             self.t_data.properties.status = 'Canceled'
             self.t_data.properties.save()
+            self.log_manager.log_by_admin("Недостаточно участников для генерации турнирной сетки. Турнир отменен.")
             return "Not enough attendants to start the tournament. Tournament will cancel"
 
-        self.create_tournament(attendants=attendants, play_bronze_match=play_bronze_match, conference="C1")
+        try:
+            self.create_tournament(attendants=attendants, play_bronze_match=play_bronze_match, conference="C1")
+        except:
+            self.log_manager.log_by_admin(
+                "Приносим свои извинения. Во время генерации турнирной сетки возникли проблемы. Пожалуйста, обратитесь к администратору сайта.")
         return "Tournament was created"
 
     @staticmethod
@@ -407,13 +427,14 @@ class Match(models.Model):
         promote_loser = False  # Change this if it's gonna be double elimination
         self.round.conference.tournamentData.tournament.update_tournament(self, winner_id, loser_id, promote_loser)
 
-    @classmethod
-    def ambivalent_result(cls):
-        print('log result of user are different, message was sent to manager')
+
+    def ambivalent_result(self):
+        self.log_manager.log_by_admin("Результаты не совпадают, администратору турнира было отправлено уведомление.")
 
     def check_for_complete_temp_state(self):
         if (self.temp_score_user1 >= math.ceil(float(self.mode[2]) / 2)) or (
                     self.temp_score_user2 >= math.ceil(float(self.mode[2]) / 2)):
+            self.log_manager.log_by_admin("Матч завершен с результатом: " + str(self.temp_score_user1) + "-" + str(self.temp_score_user2))
             print('log match is complete, 2-0 will write to DB')
             self.calculate_result(self.temp_score_user1, self.temp_score_user2)
 
@@ -425,7 +446,8 @@ class Match(models.Model):
                 self.result_user2 = None
                 self.current_state += 1
                 self.save()
-                print('log results are equal user1 +1 win')
+                self.log_manager.log_by_admin("Отмеченные результаты совпадают, " + self.contestant1.account.battle_tag + ": +1 победа")
+
                 self.check_for_complete_temp_state()
             elif self.result_user1 == '0' and self.result_user2 == '1':
                 self.temp_score_user2 += 1
@@ -433,7 +455,7 @@ class Match(models.Model):
                 self.result_user2 = None
                 self.current_state += 1
                 self.save()
-                print('log results are equal user2 +1 win')
+                self.log_manager.log_by_admin("Отмеченные результаты совпадают, " + self.contestant2.account.battle_tag + ": +1 победа")
                 self.check_for_complete_temp_state()
             else:
                 self.ambivalent_result()
@@ -443,23 +465,23 @@ class Match(models.Model):
             if self.contestant1.account_id == user.id:
                 if self.result_user1 is None or self.result_user1 == '':
                     self.result_user1 = value
-                    print('log user1 add result (state)')
+                    self.log_manager.log_by_admin(self.contestant1.account.battle_tag + " отметил результат: " + ("Победа" if value == 1 else "Поражение") + "(Бой: " + str(self.current_state) + ")")
                     self.save()
                     if self.result_user2 is not None:
                         self.check_equality()
                 else:
+                    self.log_manager.log_by_admin(self.contestant1.account.battle_tag + " попытался перезаписать результат матча.")
                     raise NotAllowedForTheUser("You can't rewrite value that was already sent")
-                    print('log user1 try to rewrite result')
             elif self.contestant2.account_id == user.id:
                 if self.result_user2 is None or self.result_user2 == '':
                     self.result_user2 = value
-                    print('log user2 add result (state)')
+                    self.log_manager.log_by_admin(self.contestant2.account.battle_tag + " отметил результат: " + ("Победа" if value == 1 else "Поражение") + "(Бой: " + str(self.current_state) + ")")
                     self.save()
                     if self.result_user1 is not None:
                         self.check_equality()
                 else:
+                    self.log_manager.log_by_admin(self.contestant2.account.battle_tag + " попытался перезаписать результат матча.")
                     raise NotAllowedForTheUser("You can't rewrite value that was already sent")
-                    print('log user2 try to rewrite result')
             else:
                 raise NotAllowedForTheUser("You can't set value for other users")
         else:
