@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="app" ng-controller="AppCtrl">
-  <head>
+<head>
     <title ng-bind="pageTitle"></title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 
+    <base href="/">
     <!-- compiled CSS --><% styles.forEach( function ( file ) { %>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}<%= file %>" /><% }); %>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}<%= file %>"/>
+    <% }); %>
 
     <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
-    <script type="text/javascript" src="{{ STATIC_URL }}<%= file %>"></script><% }); %>
+    <script type="text/javascript" src="{{ STATIC_URL }}<%= file %>"></script>
+    <% }); %>
 
-  </head>
-  <body>
+</head>
+<body>
 
-    <div class="app" id="app" ng-class="{'app-header-fixed':app.settings.headerFixed, 'app-aside-fixed':app.settings.asideFixed, 'app-aside-folded':app.settings.asideFolded, 'app-aside-dock':app.settings.asideDock, 'container':app.settings.container}" ui-view></div>
+<div class="app" id="app"
+     ng-class="{'app-header-fixed':app.settings.headerFixed, 'app-aside-fixed':app.settings.asideFixed, 'app-aside-folded':app.settings.asideFolded, 'app-aside-dock':app.settings.asideDock, 'container':app.settings.container}"
+     ui-view></div>
 
-  </body>
+</body>
 </html>

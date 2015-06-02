@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url, include
 from rest_framework import routers
+from authentication import views
 from authentication.views import AccountViewSet
 
 router = routers.SimpleRouter()
@@ -11,4 +12,5 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^', include(router.urls)),
+    url(r'^authcode/$', views.ObtainAuthToken.as_view())
 )

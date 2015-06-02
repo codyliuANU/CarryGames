@@ -109,6 +109,9 @@ module.exports = {
         'vendor/jquery/jvectormap/jquery-jvectormap-world-mill-en.js',
         'vendor/jquery/jvectormap/jquery-jvectormap-us-aea-en.js',
         'vendor/jquery/footable/footable.all.min.js',
+        'vendor/query-string/query-string.js', //oauth
+        'vendor/angular-cookie/angular-cookie.min.js',//oauth
+        'vendor/angular-oauth2/dist/angular-oauth2.min.js',
 
 
 

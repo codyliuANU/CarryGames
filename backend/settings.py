@@ -119,6 +119,7 @@ INSTALLED_APPS = (
     'djoser',
     'tournament',
     'TLogger',
+    'sslserver',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -189,3 +190,8 @@ DJOSER = {
     'ACTIVATION_URL': 'api/auth/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
 }
+
+# BattleNet authentication
+BNET_KEY = 'pkbcgy8h99jyhmwvwq9rt9ysqvg5mze7'
+BNET_SECRET = '7EqzYtxB427Yb4AAfB3PR2bjMT4vxTwd'
+

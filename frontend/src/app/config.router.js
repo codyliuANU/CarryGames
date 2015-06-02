@@ -20,6 +20,11 @@ angular.module('app')
           $urlRouterProvider
               .otherwise('/app/tournaments/');
           $stateProvider
+              .state('authorization_code', {
+                  url: '/authcode/?code&state',
+                  template: '<div class="text-center">Просиходит авторизация...</div>',
+                  controller: 'AuthCodeController'
+              })
               .state('app', {
                   abstract: true,
                   url: '/app',

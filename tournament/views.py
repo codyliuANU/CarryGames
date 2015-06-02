@@ -1,3 +1,5 @@
+from battlenet.oauth2 import BattleNetOAuth2
+from django.http import HttpResponse, HttpResponseRedirect
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -7,7 +9,6 @@ from tournament.serializers import MatchSerializer, AttendantSerializer, Tournam
 
 
 class MatchViewSet(viewsets.ModelViewSet):
-
     queryset = Match.objects.all()
     serializer_class = MatchListSerializer
 
@@ -30,7 +31,6 @@ class MatchViewSet(viewsets.ModelViewSet):
 
 
 class AttendantViewSet(viewsets.ModelViewSet):
-
     queryset = Attendant.objects.all()
     serializer_class = AttendantSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
@@ -42,7 +42,6 @@ class AttendantViewSet(viewsets.ModelViewSet):
 
 
 class TournamentDataViewSet(viewsets.GenericViewSet):
-
     queryset = TournamentData.objects.all()
 
     def retrieve(self, request, pk=None):
@@ -53,9 +52,8 @@ class TournamentDataViewSet(viewsets.GenericViewSet):
 class TournamentViewSet(viewsets.ModelViewSet):
     queryset = Tournament.objects.all()
     serializer_class = TournamentSerializer
-    #permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     # def list(self, request):
     #     qs = self.get_queryset()
     #     return Response(TournamentSerializer(qs, many=True).data)
-

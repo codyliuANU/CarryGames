@@ -1,0 +1,11 @@
+<div class="panel b-a">
+    <h4 class="font-thin padder">Лог событий</h4>
+    <div class="document-list">
+        <ul class="list-group">
+            <li ng-repeat="log in logs" class="list-group-item">
+                <p><a href class="text-info">{{log.author}}</a> {{ log.message }}</p>
+                <small class="block text-muted"><i class="fa fa-fw fa-clock-o"></i> {{ log.created_at }}</small>
+            </li>
+        </ul>
+    </div>
+</div>

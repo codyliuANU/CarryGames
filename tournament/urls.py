@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url, include
 from rest_framework import routers
+from tournament import views
 from tournament.views import MatchViewSet, AttendantViewSet, TournamentDataViewSet, TournamentViewSet
 
 

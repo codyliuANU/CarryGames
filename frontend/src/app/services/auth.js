@@ -97,6 +97,23 @@ angular.module('djangoAuthModule', [])
                 $rootScope.$broadcast("djangoAuth.logged_in", data);
             });
         },
+        'loginByAuthCode': function(auth_code){
+            var djangoAuth = this;
+            return this.request({
+                'method': "POST",
+                'url': "/authcode/",
+                'data':{
+                    'auth_code': auth_code
+                }
+            }).then(function(data){
+                if(!djangoAuth.use_session){
+                    $http.defaults.headers.common.Authorization = 'Token ' + data.auth_token;
+                    $cookies.token = data.auth_token;
+                }
+                djangoAuth.authenticated = true;
+                $rootScope.$broadcast("djangoAuth.logged_in", data);
+            });
+        },
         'logout': function(){
             var djangoAuth = this;
             return this.request({

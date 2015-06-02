@@ -3,24 +3,25 @@ from django.db import models
 
 
 class AccountManager(BaseUserManager):
-    def create_user(self, battle_tag, password=None, **kwargs):
+    def create_user(self, battle_tag, account_id, password=None, **kwargs):
         if not battle_tag:
             raise ValueError('Пользователь должен иметь корректный BattleTag.')
+        if not account_id:
+            raise ValueError('Пользователь должен иметь корректный Battle.NET ID.')
 
-        if not kwargs.get('email'):
-            raise ValueError('Пользователь должен иметь корректный email.')
-
+        email = self.normalize_email(kwargs.get('email'))
         account = self.model(
             battle_tag=battle_tag,
-            email=self.normalize_email(kwargs.get('email'))
+            account_id=account_id,
+            email=email if email is not None else ''
         )
         account.set_password(password)
         account.save()
 
         return account
 
-    def create_superuser(self, battle_tag, password, **kwargs):
-        account = self.create_user(battle_tag, password, **kwargs)
+    def create_superuser(self, battle_tag, account_id, password, **kwargs):
+        account = self.create_user(battle_tag, account_id, password, **kwargs)
 
         account.is_admin = True
         account.save()
@@ -30,6 +31,8 @@ class AccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
     battle_tag = models.CharField(max_length=15, unique=True)
+    account_id = models.BigIntegerField()  # Id from battle.net
+
     email = models.EmailField(unique=True)
 
     is_manager = models.BooleanField(default=False)
@@ -47,7 +50,7 @@ class Account(AbstractBaseUser):
     objects = AccountManager()
 
     USERNAME_FIELD = 'battle_tag'
-    REQUIRED_FIELDS = ['email']
+    REQUIRED_FIELDS = ['account_id']
 
     def __unicode__(self):
         return self.battle_tag

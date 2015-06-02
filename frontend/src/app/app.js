@@ -20,7 +20,9 @@ var app = angular.module('app', [
         'ngBracket',
         'filters-module',
         'angularFileUpload',
-        'toaster'
+        'toaster',
+        'angular-oauth2',
+        'AuthTokenModule'
     ])
 
     /**
@@ -35,7 +37,7 @@ var app = angular.module('app', [
         .run(function run($http, $cookies, $log, djangoAuth) {
             // For CSRF token compatibility with Django
             //$http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
-            djangoAuth.initialize('//127.0.0.1:8080/api/auth', false);
+            djangoAuth.initialize('//127.0.0.1:8000/api/auth', false);
         })
 
 /*.controller( 'AppCtrl', function AppCtrl ( $scope ) {
