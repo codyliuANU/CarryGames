@@ -151,10 +151,11 @@ class TournamentSerializer(serializers.ModelSerializer):
     format = serializers.CharField(max_length=2, write_only=True)
     account = AccountSerializer(read_only=True)
     log_manager = LogManagerSerializer(read_only=True)
+    participants = AttendantSerializer(source='attendant_set', many=True)
 
     class Meta:
         model = Tournament
-        read_only_fields = ('account', 'created_at', 't_data', 'log_manager',)
+        read_only_fields = ('account', 'created_at', 't_data', 'log_manager', 'participants')
 
     def create(self, validated_data):
         new_tournament = Tournament.create(name=validated_data['name'],
