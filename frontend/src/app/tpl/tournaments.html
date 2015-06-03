@@ -8,7 +8,7 @@
         <div ng-repeat="tournament in chunk" class="col-md-4">
             <div class="panel b-a">
                 <div class="panel-heading no-border bg-primary">
-                    <span class="text-lt">Имя организатора</span>
+                    <span class="text-lt">{{ tournament.account.battle_tag }}</span>
                 </div>
                 <a ui-sref="app.tournaments.id({tournament_id: tournament.id})">
                     <div class="item m-l-n-xxs m-r-n-xxs">
@@ -24,7 +24,7 @@
                     <span class="col padder-v b-r b-light">
 
                         <i class="icon-users block m-b-xs fa-2x"></i>
-                        <span>Участников:<br>32/32 + 7 ожидают</span>
+                        <span>Участников:<br>{{ tournament.participants.length }}/{{ tournament.maxplayers }}</span>
                     </span>
                     <span class="col padder-v b-r b-light">
                         <i class="fa fa-calendar block m-b-xs fa-2x"></i>
