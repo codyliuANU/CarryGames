@@ -8,7 +8,7 @@ angular.module('app')
           $rootScope.$state = $state;
           $rootScope.$stateParams = $stateParams;
           $rootScope.$on('$stateChangeError', function() {
-              $state.go('access.signin');
+              $state.go('access.authenticationRequired');
           })
       }
     ]
@@ -16,7 +16,7 @@ angular.module('app')
   .config(
     [          '$stateProvider', '$urlRouterProvider',
       function ($stateProvider,   $urlRouterProvider) {
-          
+
           $urlRouterProvider
               .otherwise('/app/tournaments/');
           $stateProvider
@@ -67,26 +67,6 @@ angular.module('app')
                   url: '/{match_id}/',
                   templateUrl: 'tpl/page_match.html'
               })
-              .state('app.dashboard-v1', {
-                  url: '/dashboard-v1',
-                  templateUrl: 'tpl/app_dashboard_v1.html'
-                 /* resolve: {
-                    deps: ['$ocLazyLoad',
-                      function( $ocLazyLoad ){
-                        return $ocLazyLoad.load(['static/src/app/controllers/chart.js']);
-                    }]
-                  }*/
-              })
-              .state('app.dashboard-v2', {
-                  url: '/dashboard-v2',
-                  templateUrl: 'tpl/app_dashboard_v2.html'
-                  /*resolve: {
-                    deps: ['$ocLazyLoad',
-                      function( $ocLazyLoad ){
-                        return $ocLazyLoad.load(['static/src/app/controllers/chart.js']);
-                    }]
-                  }*/
-              })
               .state('app.ui', {
                   url: '/ui',
                   template: '<div ui-view class="fade-in-up"></div>'
@@ -106,7 +86,7 @@ angular.module('app')
               .state('app.ui.widgets', {
                   url: '/widgets',
                   templateUrl: 'tpl/ui_widgets.html'
-              })          
+              })
               .state('app.ui.bootstrap', {
                   url: '/bootstrap',
                   templateUrl: 'tpl/ui_bootstrap.html'
@@ -173,7 +153,7 @@ angular.module('app')
                             'app/map/ui-map.js',
                             'app/map/map.js'] ).then(
                               function(){
-                                return loadGoogleMaps(); 
+                                return loadGoogleMaps();
                               }
                             );
                       }]
@@ -379,6 +359,16 @@ angular.module('app')
                       }]
                   }*/
               })
+              .state('access.authenticationRequired', {
+                  url: '/signin',
+                  templateUrl: 'tpl/page_authorization_required.html'
+                /*   resolve: {
+                      deps: ['uiLoad',
+                        function( uiLoad ){
+                          return uiLoad.load( ['static/src/app/controllers/signin.js'] );
+                      }]
+                  }*/
+              })
               .state('access.signup', {
                   url: '/signup',
                   templateUrl: 'tpl/page_signup.html',
@@ -541,9 +531,9 @@ angular.module('app')
                               {
                                   name: 'angular-skycons',
                                   files: ['app/weather/skycons.js',
-                                          'static/vendor/libs/moment.min.js', 
+                                          'static/vendor/libs/moment.min.js',
                                           'app/weather/angular-skycons.js',
-                                          'app/weather/ctrl.js' ] 
+                                          'app/weather/ctrl.js' ]
                               }
                           );
                       }]
@@ -557,12 +547,12 @@ angular.module('app')
                       deps: ['$ocLazyLoad',
                         function( $ocLazyLoad ){
                           return $ocLazyLoad.load([
-                            'com.2fdevs.videogular', 
-                            'com.2fdevs.videogular.plugins.controls', 
+                            'com.2fdevs.videogular',
+                            'com.2fdevs.videogular.plugins.controls',
                             'com.2fdevs.videogular.plugins.overlayplay',
                             'com.2fdevs.videogular.plugins.poster',
                             'com.2fdevs.videogular.plugins.buffering',
-                            'app/music/ctrl.js', 
+                            'app/music/ctrl.js',
                             'app/music/theme.css'
                           ]);
                       }]

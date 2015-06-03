@@ -12,7 +12,7 @@ app.controller('AuthCodeController', ['AuthToken', '$stateParams', 'djangoAuth',
                 .then(function (data) {
                     //success case
                     console.log("logged in successfully");
-                    $state.go('app.dashboard-v1');
+                    $state.go('app.tournaments.all');
                 }, function (data) {
                     console.log(data);
                     $scope.authError = data;
