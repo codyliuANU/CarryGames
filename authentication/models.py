@@ -13,6 +13,7 @@ class AccountManager(BaseUserManager):
         account = self.model(
             battle_tag=battle_tag,
             account_id=account_id,
+            flag='rus.png',
             email=email if email is not None else ''
         )
         account.set_password(password)

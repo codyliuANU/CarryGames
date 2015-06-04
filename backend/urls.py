@@ -16,6 +16,8 @@ urlpatterns = patterns('',
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^api/auth/authcode/', views.ObtainAuthToken.as_view()),
     url(r'^api/auth/', include('djoser.urls')),
+    # MEDIA PATH
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     #url(r'^$', 'backend.views.home', name='home'),
     url(r'^.*$', 'backend.views.home', name='home'),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+) #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

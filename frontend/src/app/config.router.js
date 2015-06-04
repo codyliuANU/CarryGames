@@ -39,7 +39,7 @@ angular.module('app')
                   templateUrl: 'tpl/tournaments.html'
               })
               .state('app.tournaments.id', {
-                  url: '/{tournament_id}',
+                  url: '/id={tournament_id}',
                   templateUrl: 'tpl/page_tournament.html'
               })
               .state('app.tournaments.new', {
@@ -341,15 +341,15 @@ angular.module('app')
                   templateUrl: 'tpl/docs.html'
               })
               // others
-              .state('lockme', {
+              /*.state('lockme', {
                   url: '/lockme',
                   templateUrl: 'tpl/page_lockme.html'
-              })
+              })*/
               .state('access', {
                   url: '/access',
                   template: '<div ui-view class="fade-in-right-big smooth"></div>'
               })
-              .state('access.signin', {
+              /*.state('access.signin', {
                   url: '/signin',
                   templateUrl: 'tpl/page_signin.html'
                 /*   resolve: {
@@ -357,8 +357,8 @@ angular.module('app')
                         function( uiLoad ){
                           return uiLoad.load( ['static/src/app/controllers/signin.js'] );
                       }]
-                  }*/
-              })
+                  }
+              })*/
               .state('access.authenticationRequired', {
                   url: '/signin',
                   templateUrl: 'tpl/page_authorization_required.html'
@@ -369,7 +369,7 @@ angular.module('app')
                       }]
                   }*/
               })
-              .state('access.signup', {
+             /* .state('access.signup', {
                   url: '/signup',
                   templateUrl: 'tpl/page_signup.html',
                   resolve: {
@@ -387,7 +387,7 @@ angular.module('app')
               .state('access.forgotpwd', {
                   url: '/forgotpwd',
                   templateUrl: 'tpl/page_forgotpwd.html'
-              })
+              })*/
               .state('access.404', {
                   url: '/404',
                   templateUrl: 'tpl/page_404.html'

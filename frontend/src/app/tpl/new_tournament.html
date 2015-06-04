@@ -2,6 +2,7 @@
     <h1 class="m-n font-thin h3">Создание нового турнира</h1>
 </div>
 <div class="wrapper-md" ng-controller="NewTournamentFormController">
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
     <div class="row clearfix">
         <div class="col-md-6 col-md-offset-3 column">
             <form name="form" class="form-validation">
@@ -38,20 +39,20 @@
                                             <tr>
                                                 <td style="padding-left: 0px">
                                                     <select name="allmatches" class="form-control"
-                                                            ng-model="tournament.allmatches">
+                                                            ng-model="tournament.allmatches" required>
                                                         <option value="bo3">Bo3</option>
                                                         <option value="bo5">Bo5</option>
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select name="semi" class="form-control" ng-model="tournament.semi">
+                                                    <select name="semi" class="form-control" ng-model="tournament.semi" required>
                                                         <option value="bo3">Bo3</option>
                                                         <option value="bo5">Bo5</option>
                                                     </select>
                                                 </td>
                                                 <td style="padding-right: 0px">
                                                     <select name="finals" class="form-control"
-                                                            ng-model="tournament.finals">
+                                                            ng-model="tournament.finals" required>
                                                         <option value="bo3">Bo3</option>
                                                         <option value="bo5">Bo5</option>
                                                     </select>
@@ -72,7 +73,7 @@
                                         <input ui-jq="TouchSpin" type="text" value="12" ng-model="tournament.maxplayers"
                                                class="form-control" data-min='6' data-max="32"
                                                data-verticalbuttons="true" data-verticalupclass="fa fa-caret-up"
-                                               data-verticaldownclass="fa fa-caret-down">
+                                               data-verticaldownclass="fa fa-caret-down" required>
                                     </div>
                                 </div>
                                 <div class="form-group" ng-controller="DatepickerDemoCtrl">
@@ -81,7 +82,7 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control sm-md-10" datepicker-popup="{{ format }}"
                                                is-open="opened" datepicker-options="dateOptions" ng-required="true"
-                                               show-button-bar="false" min-date="minDate" ng-model="tournament.date"/>
+                                               show-button-bar="false" min-date="minDate" ng-model="date"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default" ng-click="open($event)"><i
                                                         class="glyphicon glyphicon-calendar"></i></button>
@@ -90,8 +91,8 @@
                                 </div>
                                 <div class="form-group" ng-controller="DatepickerDemoCtrl">
                                     <div ng-controller="TimepickerDemoCtrl">
-                                        <timepicker ng-model="tournament.time" ng-change="changed()" hour-step="1"
-                                                    minute-step="5" show-meridian="false"></timepicker>
+                                        <timepicker ng-model="time" hour-step="1"
+                                                    minute-step="1" show-meridian="false" required></timepicker>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -110,10 +111,10 @@
                                     <label>Регион</label>
 
                                     <div class="m-b">
-                                        <select name="finals" class="form-control" ng-model="tournament.region">
-                                            <option value="Americas & Southeast Asia">Americas & Southeast Asia</option>
+                                        <select name="finals" class="form-control" ng-model="tournament.region" required>
+                                            <!--<option value="Americas & Southeast Asia">Americas & Southeast Asia</option>-->
                                             <option value="Europe">Europe</option>
-                                            <option value="Asia">Asia</option>
+                                            <!--<option value="Asia">Asia</option>-->
                                         </select>
                                     </div>
                                 </div>
@@ -121,9 +122,9 @@
                                     <label>Стоимость участия</label>
 
                                     <div class="m-b">
-                                        <input ui-jq="TouchSpin" type="text" ng-model="tournament.fare" value="0"
+                                        <input ui-jq="TouchSpin" type="text" disabled="true" ng-model="tournament.fare" value="0"
                                                class="form-control" data-min='0' data-max="1000" data-step="5"
-                                               data-decimals="0" data-prefix="<i class='fa fa-rub'></i>">
+                                               data-decimals="0" data-prefix="<i class='fa fa-rub'></i>" required>
                                     </div>
                                 </div>
                                 <br>
