@@ -15,8 +15,9 @@ app.controller('NewTournamentFormController', ['$scope', 'tournaments', '$state'
             'region': ''
         };
 
-        $scope.time = new Date();
-        $scope.date = new Date();
+        $scope.dat = {};
+        $scope.dat.time = new Date();
+        $scope.dat.date = new Date();
 
         function showPopUp(title, message, isSuccess) {
             if (isSuccess)
@@ -87,10 +88,10 @@ app.controller('NewTournamentFormController', ['$scope', 'tournaments', '$state'
 
             console.log("call create");
             //time format
-            var t = $scope.time;
+            var t = $scope.dat.time;
             $scope.tournament.time = t.getHours() + ":" + t.getMinutes();
             //date format
-            var t = $scope.date;
+            var t = $scope.dat.date;
             $scope.tournament.date = t.getFullYear() + "-" + (t.getMonth() + 1) + "-" + t.getDate();
 
             if ($scope.uploader.queue.length > 0) {

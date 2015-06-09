@@ -1,3 +1,4 @@
+import datetime
 from django.db import models, transaction
 import math
 from TLogger.models import LogManager, LogMessage
@@ -224,11 +225,11 @@ class Tournament(models.Model):
                         match.contestant2.save()
                         match.meta.matchType = '2'
                         match.meta.save()
+                        self.log_manager.log_by_admin(
+                            balancing_round[j].account.battle_tag + " сразится с " + balancing_round[j + 1].account.battle_tag)
                         self.shift_previous_round(round_b, new_round)
                         j += 1
 
-                        self.log_manager.log_by_admin(
-                            balancing_round[j].account.battle_tag + " сразится с " + balancing_round[j + 1].account.battle_tag)
                     j += 1
 
                     round_b.save()
@@ -292,9 +293,10 @@ class Tournament(models.Model):
 
         try:
             self.create_tournament(attendants=attendants, play_bronze_match=play_bronze_match, conference="C1")
-        except:
+        except Exception as e:
             self.log_manager.log_by_admin(
                 "Приносим свои извинения. Во время генерации турнирной сетки возникли проблемы. Пожалуйста, обратитесь к администратору сайта.")
+            return e
         return "Tournament was created"
 
     @staticmethod

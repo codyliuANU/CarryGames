@@ -82,19 +82,22 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control sm-md-10" datepicker-popup="{{ format }}"
                                                is-open="opened" datepicker-options="dateOptions" ng-required="true"
-                                               show-button-bar="false" min-date="minDate" ng-model="date"/>
+                                               show-button-bar="false" min-date="minDate" ng-model="dat.date"/>
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-default" ng-click="open($event)"><i
                                                         class="glyphicon glyphicon-calendar"></i></button>
                                             </span>
                                     </div>
+
                                 </div>
+                                {{ dat.date }}
                                 <div class="form-group" ng-controller="DatepickerDemoCtrl">
                                     <div ng-controller="TimepickerDemoCtrl">
-                                        <timepicker ng-model="time" hour-step="1"
+                                        <timepicker ng-model="dat.time" hour-step="1"
                                                     minute-step="1" show-meridian="false" required></timepicker>
                                     </div>
                                 </div>
+                                {{ dat.time }}
                                 <div class="form-group">
                                     <label>Правила и условия</label>
 

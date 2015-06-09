@@ -34,7 +34,7 @@ class Account(AbstractBaseUser):
     battle_tag = models.CharField(max_length=15, unique=True)
     account_id = models.BigIntegerField()  # Id from battle.net
 
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
 
     is_manager = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
